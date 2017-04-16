@@ -6,12 +6,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map.Entry;
+
+import cn.edu.neu.gspan.model.DFSCode;
+import cn.edu.neu.gspan.model.Edge;
+import cn.edu.neu.gspan.model.Graph;
+import cn.edu.neu.gspan.model.Projected;
+import cn.edu.neu.gspan.model.Vertex;
+
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.Vector;
 
 public class gSpan {
 	private ArrayList<Graph> TRANS;
+	private DFSCode DFS_CODE;
 
 	private long ID;
 	private long minsup;
@@ -29,6 +37,7 @@ public class gSpan {
 
 	public gSpan() {
 		TRANS = new ArrayList<>();
+		DFS_CODE = new DFSCode();
 
 		singleVertex = new TreeMap<>();
 		singleVertexLabel = new TreeMap<>();
@@ -119,23 +128,68 @@ public class gSpan {
 			report_single(g, gycounts);
 		}
 
-	}
-	
-	/* Special report function for single node graphs.
-	 */
-	private void report_single (Graph g, NavigableMap<Integer, Integer> ncount)
-	{
-//		int sup = 0;
-//		for (Entry<Integer, Integer> it : ncount.entrySet())
-//		{
-//			sup += Common.getValue(it.getValue());
-//		}
+		ArrayList<Edge> edges = new ArrayList<>();
+		NavigableMap<Integer, NavigableMap<Integer, NavigableMap<Integer, Projected>>> root = new TreeMap<>();
 
-		if (maxpat_max > maxpat_min && g.size () > maxpat_max)
+		for (int id = 0; id < TRANS.size(); ++id) {
+			Graph g = TRANS.get(id);
+			for (int from = 0; from < g.size(); ++from) {
+				if (Misc.get_forward_root(g, g.get(from), edges)) {
+					for (Edge it : edges) {
+						int key_1 = g.get(from).label;
+						NavigableMap<Integer, NavigableMap<Integer, Projected>> root_1 = root.get(key_1);
+						if (root_1 == null) {
+							root_1 = new TreeMap<>();
+							root.put(key_1, root_1);
+						}
+						int key_2 = it.elabel;
+						NavigableMap<Integer, Projected> root_2 = root_1.get(key_2);
+						if (root_2 == null) {
+							root_2 = new TreeMap<>();
+							root_1.put(key_2, root_2);
+						}
+						int key_3 = g.get(it.to).label;
+						Projected root_3 = root_2.get(key_3);
+						if (root_3 == null) {
+							root_3 = new Projected();
+							root_2.put(key_3, root_3);
+						}
+						root_3.push(id, it, null);
+					}
+				}
+			}
+		}
+
+		for (Entry<Integer, NavigableMap<Integer, NavigableMap<Integer, Projected>>> fromlabel : root.entrySet()) {
+			for (Entry<Integer, NavigableMap<Integer, Projected>> elabel : fromlabel.getValue().entrySet()) {
+				for (Entry<Integer, Projected> tolabel : elabel.getValue().entrySet()) {
+					/*
+					 * Build the initial two-node graph. It will be grown
+					 * recursively within project.
+					 */
+					DFS_CODE.push(0, 1, fromlabel.getKey(), elabel.getKey(), tolabel.getKey());
+					// project (tolabel->second);
+					DFS_CODE.pop();
+				}
+			}
+		}
+	}
+
+	/*
+	 * Special report function for single node graphs.
+	 */
+	private void report_single(Graph g, NavigableMap<Integer, Integer> ncount) {
+		// int sup = 0;
+		// for (Entry<Integer, Integer> it : ncount.entrySet())
+		// {
+		// sup += Common.getValue(it.getValue());
+		// }
+
+		if (maxpat_max > maxpat_min && g.size() > maxpat_max)
 			return;
-		if (maxpat_min > 0 && g.size () < maxpat_min)
+		if (maxpat_min > 0 && g.size() < maxpat_min)
 			return;
-		
-//		System.out.println("t #  * " + sup);
+
+		// System.out.println("t # * " + sup);
 	}
 }
