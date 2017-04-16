@@ -14,6 +14,9 @@ public class Graph extends ArrayList<Vertex> {
 	public int edge_size = 0;
 	public boolean directed = false;
 
+	public Graph() {
+	}
+
 	public Graph(boolean directed) {
 		this.directed = directed;
 	};
@@ -148,6 +151,12 @@ public class Graph extends ArrayList<Vertex> {
 				assert (it.from >= 0 && it.from < size());
 				assert (it.to >= 0 && it.to < size());
 			}
+		}
+	}
+	
+	public void resize(int size) {
+		for (int i = 0; i < size(); i++) {
+			this.add(new Vertex());
 		}
 	}
 }
