@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class Main {
 	public static void main(String[] args) throws IOException {
 		int minsup = 1;
-		int maxpat = 0xffffffff;
+		int maxpat = Integer.MAX_VALUE;
 		int minnodes = 0;
 		boolean directed = false;
 
@@ -19,7 +19,7 @@ public class Main {
 		System.out.println("输入频数");
 		minsup = sc.nextInt();
 		File readfile = new File(filepath);
-		File writefile = new File("result");
+		File writefile = new File(readfile.getName() + "_result");
 		FileReader reader = new FileReader(readfile);
 		FileWriter writer = new FileWriter(writefile);
 		writer.flush();

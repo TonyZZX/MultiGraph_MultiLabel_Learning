@@ -59,4 +59,16 @@ public class DFSCode extends ArrayList<DFS> {
 
 		return rmpath;
 	}
+
+	/*
+	 * Return number of nodes in the graph.
+	 */
+	public int nodeCount() {
+		int nodecount = 0;
+
+		for (DFS it : this)
+			nodecount = Math.max(nodecount, Math.max(it.from, it.to) + 1);
+
+		return (nodecount);
+	}
 }

@@ -144,18 +144,20 @@ public class Graph extends ArrayList<Vertex> {
 		 * Check all indices
 		 */
 		for (int from = 0; from < size(); ++from) {
-			System.out.println("check vertex " + from + ", label " + this.get(from).label + "\n");
+			System.out.println(
+					"check vertex " + from + ", label " + this.get(from).label + System.getProperty("line.separator"));
 
 			for (Edge it : this.get(from).edge) {
-				System.out.println("   check edge from " + it.from + " to " + it.to + ", label " + it.elabel + "\n");
+				System.out.println("   check edge from " + it.from + " to " + it.to + ", label " + it.elabel
+						+ System.getProperty("line.separator"));
 				assert (it.from >= 0 && it.from < size());
 				assert (it.to >= 0 && it.to < size());
 			}
 		}
 	}
-	
+
 	public void resize(int size) {
-		for (int i = 0; i < size(); i++) {
+		for (int i = 0; i < size; i++) {
 			this.add(new Vertex());
 		}
 	}

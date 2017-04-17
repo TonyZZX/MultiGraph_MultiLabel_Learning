@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map.Entry;
 
 import cn.edu.neu.gspan.model.DFSCode;
@@ -18,8 +19,6 @@ import cn.edu.neu.gspan.model.Vertex;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.Vector;
-
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class gSpan {
 	private ArrayList<Graph> TRANS;
@@ -77,7 +76,7 @@ public class gSpan {
 		return is;
 	}
 
-	private void run_intern() {
+	private void run_intern() throws IOException {
 		/*
 		 * In case 1 node subgraphs should also be mined for, do this as
 		 * preprocessing step.
@@ -186,26 +185,43 @@ public class gSpan {
 	/*
 	 * Special report function for single node graphs.
 	 */
-	private void report_single(Graph g, NavigableMap<Integer, Integer> ncount) {
-		// int sup = 0;
-		// for (Entry<Integer, Integer> it : ncount.entrySet())
-		// {
-		// sup += Common.getValue(it.getValue());
-		// }
+	private void report_single(Graph g, NavigableMap<Integer, Integer> ncount) throws IOException {
+		int sup = 0;
+		for (Entry<Integer, Integer> it : ncount.entrySet()) {
+			sup += Common.getValue(it.getValue());
+		}
 
 		if (maxpat_max > maxpat_min && g.size() > maxpat_max)
 			return;
 		if (maxpat_min > 0 && g.size() < maxpat_min)
 			return;
 
-		// System.out.println("t # * " + sup);
+		os.write("t # " + ID + " * " + sup + System.getProperty("line.separator"));
+		g.write(os);
+		ID++;
+	}
+
+	private void report(Projected projected, int sup) throws IOException {
+		/*
+		 * Filter to small/too large graphs.
+		 */
+		if (maxpat_max > maxpat_min && DFS_CODE.nodeCount() > maxpat_max)
+			return;
+		if (maxpat_min > 0 && DFS_CODE.nodeCount() < maxpat_min)
+			return;
+
+		Graph g = new Graph(directed);
+		DFS_CODE.toGraph(g);
+		os.write("t # " + ID + " * " + sup + System.getProperty("line.separator"));
+		g.write(os);
+		++ID;
 	}
 
 	/*
 	 * Recursive subgraph mining function (similar to subprocedure 1
 	 * Subgraph_Mining in [Yan2002]).
 	 */
-	private void project(Projected projected) {
+	private void project(Projected projected) throws IOException {
 		/*
 		 * Check if the pattern is frequent enough.
 		 */
@@ -222,101 +238,139 @@ public class gSpan {
 		}
 
 		// Output the frequent substructure
-		// report (projected, sup);
-		//
-		// /* In case we have a valid upper bound and our graph already exceeds
-		// it,
-		// * return. Note: we do not check for equality as the DFS exploration
-		// may
-		// * still add edges within an existing subgraph, without increasing the
-		// * number of nodes.
-		// */
-		// if (maxpat_max > maxpat_min && DFS_CODE.nodeCount () > maxpat_max)
-		// return;
-		//
-		//
-		// /* We just outputted a frequent subgraph. As it is frequent enough,
-		// so
-		// * might be its (n+1)-extension-graphs, hence we enumerate them all.
-		// */
-		// RMPath &rmpath = DFS_CODE.buildRMPath ();
-		// int minlabel = DFS_CODE[0].fromlabel;
-		// int maxtoc = DFS_CODE[rmpath[0]].to;
-		//
-		// Projected_map3 new_fwd_root;
-		// Projected_map2 new_bck_root;
-		// EdgeList edges;
-		//
-		// /* Enumerate all possible one edge extensions of the current
-		// substructure.
-		// */
-		// for (int n = 0; n < projected.size(); ++n) {
-		//
-		// int id = projected[n].id;
-		// PDFS *cur = &projected[n];
-		// History history (TRANS[id], cur);
-		//
-		// // XXX: do we have to change something here for directed edges?
-		//
-		// // backward
-		// for (int i = (int)rmpath.size()-1; i >= 1; --i) {
-		// Edge *e = get_backward (TRANS[id], history[rmpath[i]],
-		// history[rmpath[0]], history);
-		// if (e)
-		// new_bck_root[DFS_CODE[rmpath[i]].from][e.elabel].push (id, e, cur);
-		// }
-		//
-		// // pure forward
-		// // FIXME: here we pass a too large e.to (== history[rmpath[0]].to
-		// // into get_forward_pure, such that the assertion fails.
-		// //
-		// // The problem is:
-		// // history[rmpath[0]].to > TRANS[id].size()
-		// if (get_forward_pure (TRANS[id], history[rmpath[0]], minlabel,
-		// history, edges))
-		// for (EdgeList::iterator it = edges.begin(); it != edges.end(); ++it)
-		// new_fwd_root[maxtoc][(*it).elabel][TRANS[id][(*it).to].label].push
-		// (id, *it, cur);
-		//
-		// // backtracked forward
-		// for (int i = 0; i < (int)rmpath.size(); ++i)
-		// if (get_forward_rmpath (TRANS[id], history[rmpath[i]], minlabel,
-		// history, edges))
-		// for (EdgeList::iterator it = edges.begin(); it != edges.end(); ++it)
-		// new_fwd_root[DFS_CODE[rmpath[i]].from][(*it).elabel][TRANS[id][(*it).to].label].push
-		// (id, *it, cur);
-		// }
-		//
-		// /* Test all extended substructures.
-		// */
-		// // backward
-		// for (Projected_iterator2 to = new_bck_root.begin(); to !=
-		// new_bck_root.end(); ++to) {
-		// for (Projected_iterator1 elabel = to.second.begin(); elabel !=
-		// to.second.end(); ++elabel) {
-		// DFS_CODE.push (maxtoc, to.first, -1, elabel.first, -1);
-		// project (elabel.second);
-		// DFS_CODE.pop();
-		// }
-		// }
-		//
-		// // forward
-		// for (Projected_riterator3 from = new_fwd_root.rbegin() ;
-		// from != new_fwd_root.rend() ; ++from)
-		// {
-		// for (Projected_iterator2 elabel = from.second.begin() ;
-		// elabel != from.second.end() ; ++elabel)
-		// {
-		// for (Projected_iterator1 tolabel = elabel.second.begin();
-		// tolabel != elabel.second.end(); ++tolabel)
-		// {
-		// DFS_CODE.push (from.first, maxtoc+1, -1, elabel.first,
-		// tolabel.first);
-		// project (tolabel.second);
-		// DFS_CODE.pop ();
-		// }
-		// }
-		// }
+		report(projected, sup);
+
+		/*
+		 * In case we have a valid upper bound and our graph already exceeds it,
+		 * return. Note: we do not check for equality as the DFS exploration may
+		 * still add edges within an existing subgraph, without increasing the
+		 * number of nodes.
+		 */
+		if (maxpat_max > maxpat_min && DFS_CODE.nodeCount() > maxpat_max)
+			return;
+
+		/*
+		 * We just outputted a frequent subgraph. As it is frequent enough, so
+		 * might be its (n+1)-extension-graphs, hence we enumerate them all.
+		 */
+		ArrayList<Integer> rmpath = DFS_CODE.buildRMPath();
+		int minlabel = DFS_CODE.get(0).fromlabel;
+		int maxtoc = DFS_CODE.get(rmpath.get(0)).to;
+
+		NavigableMap<Integer, NavigableMap<Integer, NavigableMap<Integer, Projected>>> new_fwd_root = new TreeMap<>();
+		NavigableMap<Integer, NavigableMap<Integer, Projected>> new_bck_root = new TreeMap<>();
+		ArrayList<Edge> edges = new ArrayList<>();
+
+		/*
+		 * Enumerate all possible one edge extensions of the current
+		 * substructure.
+		 */
+		for (int n = 0; n < projected.size(); ++n) {
+
+			int id = projected.get(n).id;
+			PDFS cur = projected.get(n);
+			History history = new History(TRANS.get(id), cur);
+
+			// XXX: do we have to change something here for directed edges?
+
+			// backward
+			for (int i = rmpath.size() - 1; i >= 1; --i) {
+				Edge e = Misc.get_backward(TRANS.get(id), history.get(rmpath.get(i)), history.get(rmpath.get(0)),
+						history);
+				if (e != null) {
+					int key_1 = DFS_CODE.get(rmpath.get(i)).from;
+					NavigableMap<Integer, Projected> root_1 = new_bck_root.get(key_1);
+					if (root_1 == null) {
+						root_1 = new TreeMap<>();
+						new_bck_root.put(key_1, root_1);
+					}
+					int key_2 = e.elabel;
+					Projected root_2 = root_1.get(key_2);
+					if (root_2 == null) {
+						root_2 = new Projected();
+						root_1.put(key_2, root_2);
+					}
+					root_2.push(id, e, cur);
+				}
+			}
+
+			// pure forward
+			// FIXME: here we pass a too large e.to (== history[rmpath[0]].to
+			// into get_forward_pure, such that the assertion fails.
+			//
+			// The problem is:
+			// history[rmpath[0]].to > TRANS[id].size()
+			if (Misc.get_forward_pure(TRANS.get(id), history.get(rmpath.get(0)), minlabel, history, edges))
+				for (Edge it : edges) {
+					int key_1 = maxtoc;
+					NavigableMap<Integer, NavigableMap<Integer, Projected>> root_1 = new_fwd_root.get(key_1);
+					if (root_1 == null) {
+						root_1 = new TreeMap<>();
+						new_fwd_root.put(key_1, root_1);
+					}
+					int key_2 = it.elabel;
+					NavigableMap<Integer, Projected> root_2 = root_1.get(key_2);
+					if (root_2 == null) {
+						root_2 = new TreeMap<>();
+						root_1.put(key_2, root_2);
+					}
+					int key_3 = TRANS.get(id).get(it.to).label;
+					Projected root_3 = root_2.get(key_3);
+					if (root_3 == null) {
+						root_3 = new Projected();
+						root_2.put(key_3, root_3);
+					}
+					root_3.push(id, it, cur);
+				}
+			// backtracked forward
+			for (int i = 0; i < rmpath.size(); ++i)
+				if (Misc.get_forward_rmpath(TRANS.get(id), history.get(rmpath.get(i)), minlabel, history, edges))
+					for (Edge it : edges) {
+						int key_1 = DFS_CODE.get(rmpath.get(i)).from;
+						NavigableMap<Integer, NavigableMap<Integer, Projected>> root_1 = new_fwd_root.get(key_1);
+						if (root_1 == null) {
+							root_1 = new TreeMap<>();
+							new_fwd_root.put(key_1, root_1);
+						}
+						int key_2 = it.elabel;
+						NavigableMap<Integer, Projected> root_2 = root_1.get(key_2);
+						if (root_2 == null) {
+							root_2 = new TreeMap<>();
+							root_1.put(key_2, root_2);
+						}
+						int key_3 = TRANS.get(id).get(it.to).label;
+						Projected root_3 = root_2.get(key_3);
+						if (root_3 == null) {
+							root_3 = new Projected();
+							root_2.put(key_3, root_3);
+						}
+						root_3.push(id, it, cur);
+					}
+		}
+
+		/*
+		 * Test all extended substructures.
+		 */
+		// backward
+		for (Entry<Integer, NavigableMap<Integer, Projected>> to : new_bck_root.entrySet()) {
+			for (Entry<Integer, Projected> elabel : to.getValue().entrySet()) {
+				DFS_CODE.push(maxtoc, to.getKey(), -1, elabel.getKey(), -1);
+				project(elabel.getValue());
+				DFS_CODE.pop();
+			}
+		}
+
+		// forward
+		for (Entry<Integer, NavigableMap<Integer, NavigableMap<Integer, Projected>>> from : new_fwd_root.descendingMap()
+				.entrySet()) {
+			for (Entry<Integer, NavigableMap<Integer, Projected>> elabel : from.getValue().entrySet()) {
+				for (Entry<Integer, Projected> tolabel : elabel.getValue().entrySet()) {
+					DFS_CODE.push(from.getKey(), maxtoc + 1, -1, elabel.getKey(), tolabel.getKey());
+					project(tolabel.getValue());
+					DFS_CODE.pop();
+				}
+			}
+		}
 	}
 
 	private int support(Projected projected) {
@@ -393,7 +447,13 @@ public class gSpan {
 					Edge e = Misc.get_backward(GRAPH_IS_MIN, history.get(rmpath.get(i)), history.get(rmpath.get(0)),
 							history);
 					if (e != null) {
-						root.get(e.elabel).push(0, e, cur);
+						int key_1 = e.elabel;
+						Projected root_1 = root.get(key_1);
+						if (root_1 == null) {
+							root_1 = new Projected();
+							root.put(key_1, root_1);
+						}
+						root_1.push(0, e, cur);
 						newto = DFS_CODE_IS_MIN.get(rmpath.get(i)).from;
 						flg = true;
 					}
@@ -421,8 +481,21 @@ public class gSpan {
 				if (Misc.get_forward_pure(GRAPH_IS_MIN, history.get(rmpath.get(0)), minlabel, history, edges)) {
 					flg = true;
 					newfrom = maxtoc;
-					for (Edge it : edges)
-						root.get(it.elabel).get(GRAPH_IS_MIN.get(it.to).label).push(0, it, cur);
+					for (Edge it : edges) {
+						int key_1 = it.elabel;
+						NavigableMap<Integer, Projected> root_1 = root.get(key_1);
+						if (root_1 == null) {
+							root_1 = new TreeMap<>();
+							root.put(key_1, root_1);
+						}
+						int key_2 = GRAPH_IS_MIN.get(it.to).label;
+						Projected root_2 = root_1.get(key_2);
+						if (root_2 == null) {
+							root_2 = new Projected();
+							root_1.put(key_2, root_2);
+						}
+						root_2.push(0, it, cur);
+					}
 				}
 			}
 
@@ -433,8 +506,21 @@ public class gSpan {
 					if (Misc.get_forward_rmpath(GRAPH_IS_MIN, history.get(rmpath.get(i)), minlabel, history, edges)) {
 						flg = true;
 						newfrom = DFS_CODE_IS_MIN.get(rmpath.get(i)).from;
-						for (Edge it : edges)
-							root.get(it.elabel).get(GRAPH_IS_MIN.get(it.to).label).push(0, it, cur);
+						for (Edge it : edges) {
+							int key_1 = it.elabel;
+							NavigableMap<Integer, Projected> root_1 = root.get(key_1);
+							if (root_1 == null) {
+								root_1 = new TreeMap<>();
+								root.put(key_1, root_1);
+							}
+							int key_2 = GRAPH_IS_MIN.get(it.to).label;
+							Projected root_2 = root_1.get(key_2);
+							if (root_2 == null) {
+								root_2 = new Projected();
+								root_1.put(key_2, root_2);
+							}
+							root_2.push(0, it, cur);
+						}
 					}
 				}
 			}
