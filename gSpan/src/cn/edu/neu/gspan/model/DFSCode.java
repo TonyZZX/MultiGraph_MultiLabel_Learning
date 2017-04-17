@@ -3,6 +3,10 @@ package cn.edu.neu.gspan.model;
 import java.util.ArrayList;
 
 public class DFSCode extends ArrayList<DFS> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Integer> rmpath;
 
 	public DFSCode() {

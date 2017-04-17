@@ -26,5 +26,7 @@ public class Main {
 
 		gSpan gSpan = new gSpan();
 		gSpan.run(reader, writer, minsup, maxpat, minnodes, directed);
+		
+		sc.close();
 	}
 }

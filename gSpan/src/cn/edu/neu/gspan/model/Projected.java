@@ -1,9 +1,13 @@
 package cn.edu.neu.gspan.model;
 
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 public class Projected extends ArrayList<PDFS> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public void push(int id, Edge edge, PDFS prev) {
 		PDFS d = new PDFS();
 		d.id = id;

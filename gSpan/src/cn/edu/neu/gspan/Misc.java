@@ -96,7 +96,7 @@ public class Misc {
 		int tolabel = graph.get(e.to).label;
 
 		for (Edge it : graph.get(e.from).edge) {
-			int tolabel2 = graph.get(e.to).label;
+			int tolabel2 = graph.get(it.to).label;
 			if (e.to == it.to || minlabel > tolabel2 || history.hasVertex(it.to))
 				continue;
 

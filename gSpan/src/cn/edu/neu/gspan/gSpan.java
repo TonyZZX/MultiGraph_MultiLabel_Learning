@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Map.Entry;
 
 import cn.edu.neu.gspan.model.DFSCode;
@@ -31,7 +30,6 @@ public class gSpan {
 	private long maxpat_min;
 	private long maxpat_max;
 	private boolean directed;
-	private boolean self_loop;
 	private FileWriter os;
 
 	/*
@@ -58,7 +56,6 @@ public class gSpan {
 		maxpat_min = _maxpat_min;
 		maxpat_max = _maxpat_max;
 		directed = _directed;
-		self_loop = false;
 
 		read(is);
 		run_intern();
@@ -124,10 +121,12 @@ public class gSpan {
 			/*
 			 * [graph_id] = count for current substructure
 			 */
-			Vector<Integer> counts = new Vector<>(TRANS.size());
+			Vector<Integer> counts = new Vector<>();
+			counts.setSize(TRANS.size());
 			for (Entry<Integer, NavigableMap<Integer, Integer>> it2 : singleVertex.entrySet()) {
-				counts.add(it2.getKey(), it2.getValue().get(frequent_label));
+				counts.set(it2.getKey(), it2.getValue().get(frequent_label));
 			}
+			
 			NavigableMap<Integer, Integer> gycounts = new TreeMap<>();
 			for (int n = 0; n < counts.size(); ++n)
 				gycounts.put(n, counts.get(n));
@@ -463,7 +462,8 @@ public class gSpan {
 			if (flg) {
 				Entry<Integer, Projected> elabel = root.firstEntry();
 				DFS_CODE_IS_MIN.push(maxtoc, newto, -1, elabel.getKey(), -1);
-				if (DFS_CODE.get(DFS_CODE_IS_MIN.size() - 1) != DFS_CODE_IS_MIN.get(DFS_CODE_IS_MIN.size() - 1))
+				if (DFS_CODE.get(DFS_CODE_IS_MIN.size() - 1)
+						.equals(DFS_CODE_IS_MIN.get(DFS_CODE_IS_MIN.size() - 1)) != true)
 					return false;
 				return project_is_min(elabel.getValue());
 			}
@@ -529,7 +529,8 @@ public class gSpan {
 				Entry<Integer, NavigableMap<Integer, Projected>> elabel = root.firstEntry();
 				Entry<Integer, Projected> tolabel = elabel.getValue().firstEntry();
 				DFS_CODE_IS_MIN.push(newfrom, maxtoc + 1, -1, elabel.getKey(), tolabel.getKey());
-				if (DFS_CODE.get(DFS_CODE_IS_MIN.size() - 1) != DFS_CODE_IS_MIN.get(DFS_CODE_IS_MIN.size() - 1))
+				if (DFS_CODE.get(DFS_CODE_IS_MIN.size() - 1)
+						.equals(DFS_CODE_IS_MIN.get(DFS_CODE_IS_MIN.size() - 1)) != true)
 					return false;
 				return project_is_min(tolabel.getValue());
 			}

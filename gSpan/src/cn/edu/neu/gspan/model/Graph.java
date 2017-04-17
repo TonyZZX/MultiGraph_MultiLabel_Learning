@@ -11,6 +11,10 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class Graph extends ArrayList<Vertex> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public int edge_size = 0;
 	public boolean directed = false;
 
@@ -157,7 +161,7 @@ public class Graph extends ArrayList<Vertex> {
 	}
 
 	public void resize(int size) {
-		for (int i = 0; i < size; i++) {
+		while (this.size() < size) {
 			this.add(new Vertex());
 		}
 	}

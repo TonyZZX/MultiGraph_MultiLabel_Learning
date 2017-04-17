@@ -7,12 +7,12 @@ public class DFS {
 	public int elabel = 0;
 	public int tolabel = 0;
 
-//	public static boolean isEqual(DFS d1, DFS d2) {
-//		if (d1.from == d2.from && d1.to == d2.to && d1.fromlabel == d2.fromlabel && d1.elabel == d2.elabel
-//				&& d1.tolabel == d2.tolabel) {
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
+	public boolean equals(DFS dfs) {
+		if (this.from == dfs.from && this.to == dfs.to && this.fromlabel == dfs.fromlabel && this.elabel == dfs.elabel
+				&& this.tolabel == dfs.tolabel) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
