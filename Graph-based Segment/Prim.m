@@ -24,13 +24,13 @@ for num=1:heapNum
                 eset_tmp(k,1)=i;
                 eset_tmp(k,2)=j;
                 eset_tmp(k,3)=am(point_set(i,num),point_set(j,num));
-                mir_t(i)=point_set(i,num);  %ding dian ming cheng dui zhao biao
-                mir_t(j)=point_set(j,num);
+                %mir_t(i)=point_set(i,num);  %ding dian ming cheng dui zhao biao
+                %mir_t(j)=point_set(j,num);
                 k=k+1;
             end
         end
     end
-    mir{1,num}=mir_t;
+    %mir{1,num}=mir_t;
     edge_set{1,num}=eset_tmp;
     etable = table(eset_tmp(:,1:2),eset_tmp(:,3),'VariableNames',{'EndNodes','Weight'});
     EdgeTable{1,num}=etable;
@@ -39,11 +39,13 @@ for num=1:heapNum
     ttmp=minspantree(gtmp);
     T{1,num}=ttmp;
     tedge=ttmp.Edges.EndNodes;
-    tedge(:,3)=ttmp.Edges.Weight;
+    tedge(:,3)=1;
+%{
     for i=1:length(tedge)
         tedge(i,1)=mir_t(tedge(i,1));
         tedge(i,2)=mir_t(tedge(i,2));
     end
+%}
     true_edge{1,num}=tedge;
     
     % Get label from nodes. Compare it with point_set. Bulid nodes
@@ -61,10 +63,18 @@ for num=1:heapNum
 %     nodeTable = table(nodesTemp(:,1));
     % Build edges
     edgesTemp = 0;
+    for i=1:length(point_set)
+        if(point_set(i,num)==0)
+            break;
+        end
+        point_set(i,num)=i;
+    end
     for i = 1:length(tedge)
+%{
         if tedge(i, 3) == 0
             continue;
         end
+%}
         for j = 1:length(point_set)
             point = point_set(j, num);
             if point == tedge(i, 1)
