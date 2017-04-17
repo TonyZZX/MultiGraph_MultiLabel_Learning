@@ -14,7 +14,7 @@ public class Main {
 		boolean directed = false;
 
 		Scanner sc = new Scanner(System.in);
-		System.out.println("输入数据路径");
+		System.out.println("输入文件名");
 		String filepath = sc.nextLine();
 		System.out.println("输入频数");
 		minsup = sc.nextInt();
