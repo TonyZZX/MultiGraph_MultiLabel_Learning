@@ -35,8 +35,12 @@ public class gSpan {
 	/*
 	 * Singular vertex handling stuff [graph][vertexlabel] = count.
 	 */
-	NavigableMap<Integer, NavigableMap<Integer, Integer>> singleVertex;
-	NavigableMap<Integer, Integer> singleVertexLabel;
+	private NavigableMap<Integer, NavigableMap<Integer, Integer>> singleVertex;
+	private NavigableMap<Integer, Integer> singleVertexLabel;
+	
+	// 扩展：记录频繁子图出现在哪些图中
+	// map<子图编号, List（都出现在哪些图里）>
+	public NavigableMap<Integer, ArrayList<Integer>> appearedGraphMap;
 
 	public gSpan() {
 		TRANS = new ArrayList<>();
@@ -46,6 +50,8 @@ public class gSpan {
 
 		singleVertex = new TreeMap<>();
 		singleVertexLabel = new TreeMap<>();
+		
+		appearedGraphMap = new TreeMap<>();
 	}
 
 	public void run(FileReader is, FileWriter _os, long _minsup, long _maxpat_max, long _maxpat_min, boolean _directed)
@@ -186,8 +192,14 @@ public class gSpan {
 	 */
 	private void report_single(Graph g, NavigableMap<Integer, Integer> ncount) throws IOException {
 		int sup = 0;
+		// 增加：记录出现在哪个图中
+		ArrayList<Integer> appearedGraphList = new ArrayList<>();
 		for (Entry<Integer, Integer> it : ncount.entrySet()) {
-			sup += Common.getValue(it.getValue());
+			int mSup = Common.getValue(it.getValue());
+			sup += mSup;
+			if (mSup > 0) {
+				appearedGraphList.add(it.getKey());
+			}
 		}
 
 		if (maxpat_max > maxpat_min && g.size() > maxpat_max)
@@ -196,11 +208,12 @@ public class gSpan {
 			return;
 
 		os.write("t # " + ID + " * " + sup + System.getProperty("line.separator"));
+		appearedGraphMap.put((int) ID, appearedGraphList);
 		g.write(os);
 		ID++;
 	}
 
-	private void report(Projected projected, int sup) throws IOException {
+	private void report(Projected projected, int sup, ArrayList<Integer> appearedGraphList) throws IOException {
 		/*
 		 * Filter to small/too large graphs.
 		 */
@@ -212,6 +225,8 @@ public class gSpan {
 		Graph g = new Graph(directed);
 		DFS_CODE.toGraph(g);
 		os.write("t # " + ID + " * " + sup + System.getProperty("line.separator"));
+		// 增加：记录出现在哪个图中
+		appearedGraphMap.put((int) ID, appearedGraphList);
 		g.write(os);
 		++ID;
 	}
@@ -225,6 +240,8 @@ public class gSpan {
 		 * Check if the pattern is frequent enough.
 		 */
 		int sup = support(projected);
+		// 增加：记录出现在哪些图中
+		ArrayList<Integer> appearedGraphList = getAppearedGraphList(projected);
 		if (sup < minsup)
 			return;
 
@@ -237,7 +254,7 @@ public class gSpan {
 		}
 
 		// Output the frequent substructure
-		report(projected, sup);
+		report(projected, sup, appearedGraphList);
 
 		/*
 		 * In case we have a valid upper bound and our graph already exceeds it,
@@ -384,6 +401,21 @@ public class gSpan {
 		}
 
 		return size;
+	}
+	
+	// 返回出现在哪些图中
+	private ArrayList<Integer> getAppearedGraphList(Projected projected) {
+		int oid = 0xffffffff;
+		ArrayList<Integer> appearedGraphList = new ArrayList<>();
+
+		for (PDFS cur : projected) {
+			if (oid != cur.id) {
+				appearedGraphList.add(cur.id);
+			}
+			oid = cur.id;
+		}
+
+		return appearedGraphList;
 	}
 
 	private boolean is_min() {
