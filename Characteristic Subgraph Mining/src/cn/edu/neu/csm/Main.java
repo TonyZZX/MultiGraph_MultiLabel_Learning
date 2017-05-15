@@ -21,8 +21,10 @@ public class Main {
 		 * 
 		 * 2. 读入标记。根据每个图包的大小，给包内每个图都打上标记
 		 * 	- 多标记矩阵
+		 * 实现！
 		 * 
 		 * 3. 遍历子图map，算出信息分数map<子图编号, 信息分数>
+		 * 实现！
 		 * 
 		 * 4. 按照信息分数重排序
 		 */
@@ -55,7 +57,7 @@ public class Main {
 		reader = new FileReader(readfile);
 		
 		CSM csm = new CSM();
-		csm.run(reader);
+		csm.run(reader, gSpan, 0);
 		
 		String result = "频繁子图：\n";
 		for (Entry<Integer, ArrayList<Integer>> mEntry : gSpan.appearedGraphMap.entrySet()) {
@@ -67,7 +69,10 @@ public class Main {
 		}
 		result += "多标记矩阵：\n";
 		for (Label label : csm.labelMatrix) {
-			
+			for (int mLabel : label.multiLabels) {
+				result += mLabel + " ";
+			}
+			result += "\n";
 		}
 		System.out.println(result);
 		

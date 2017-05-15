@@ -41,6 +41,8 @@ public class gSpan {
 	// 扩展：记录频繁子图出现在哪些图中
 	// map<子图编号, List（都出现在哪些图里）>
 	public NavigableMap<Integer, ArrayList<Integer>> appearedGraphMap;
+	// 最后的频繁子图挖掘结果
+	public NavigableMap<Integer, Graph> subgraphMap;
 
 	public gSpan() {
 		TRANS = new ArrayList<>();
@@ -52,6 +54,7 @@ public class gSpan {
 		singleVertexLabel = new TreeMap<>();
 		
 		appearedGraphMap = new TreeMap<>();
+		subgraphMap = new TreeMap<>();
 	}
 
 	public void run(FileReader is, FileWriter _os, long _minsup, long _maxpat_max, long _maxpat_min, boolean _directed)
@@ -209,6 +212,7 @@ public class gSpan {
 
 		os.write("t # " + ID + " * " + sup + System.getProperty("line.separator"));
 		appearedGraphMap.put((int) ID, appearedGraphList);
+		subgraphMap.put((int) ID, g);
 		g.write(os);
 		ID++;
 	}
@@ -227,6 +231,7 @@ public class gSpan {
 		os.write("t # " + ID + " * " + sup + System.getProperty("line.separator"));
 		// 增加：记录出现在哪个图中
 		appearedGraphMap.put((int) ID, appearedGraphList);
+		subgraphMap.put((int) ID, g);
 		g.write(os);
 		++ID;
 	}
