@@ -14,6 +14,9 @@ public class Common {
 	}
 
 	public static double log(double value, int base) {
+		if (value == 0) {
+			return 0;
+		}
 		return Math.log(value) / Math.log(base);
 	}
 

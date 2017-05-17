@@ -1,10 +1,12 @@
-package cn.edu.neu.csm;
+﻿package cn.edu.neu.csm;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.NavigableMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
@@ -16,9 +18,11 @@ public class CSM {
 	// 多标记矩阵
 	public ArrayList<Label> labelMatrix;
 
+	private FileWriter os;
 	// 最多返回的子图个数
 	private int maxNum = 0;
-	
+
+	private long ID = 0;
 	// 图包个数
 	private int graphNum = 0;
 	// 一个图包对应的标记个数
@@ -34,7 +38,9 @@ public class CSM {
 		labelMatrix = new ArrayList<>();
 	}
 
-	public void run(FileReader is, gSpan gSpan, int maxNum) throws IOException {
+	public void run(FileReader is, FileWriter os, gSpan gSpan, int maxNum) throws IOException {
+		this.os = os;
+		ID = 0;
 		appearedGraphMap = gSpan.appearedGraphMap;
 		subgraphMap = gSpan.subgraphMap;
 		subgraphNum = subgraphMap.size();
@@ -61,7 +67,7 @@ public class CSM {
 		return is;
 	}
 
-	private void run_intern() {
+	private void run_intern() throws IOException {
 		NavigableMap<Integer, Double> subgraphEntropy = new TreeMap<>();
 		for (Entry<Integer, ArrayList<Integer>> mEntry : appearedGraphMap.entrySet()) {
 			// 熵
@@ -85,11 +91,20 @@ public class CSM {
 			subgraphEntropy.put(mEntry.getKey(), entropy);
 		}
 		
-		System.out.println(subgraphEntropy);
-	    System.out.println(Common.entriesSortedByValues(subgraphEntropy));
+		SortedSet<Entry<Integer, Double>> sortedEntropy = Common.entriesSortedByValues(subgraphEntropy);
+		for (Entry<Integer, Double> entry : sortedEntropy) {
+			report(entry);
+		}
 	}
-	
-	private void report() {
+
+	private void report(Entry<Integer, Double> entry) throws IOException {
+		if (ID >= maxNum) {
+			return;
+		}
 		
+		Graph g = subgraphMap.get(entry.getKey());
+		os.write("t # " + ID + " * " + entry.getValue() + System.getProperty("line.separator"));
+		g.write(os);
+		++ID;
 	}
 }
