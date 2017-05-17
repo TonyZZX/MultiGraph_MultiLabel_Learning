@@ -69,6 +69,7 @@ public class gSpan {
 		read(is);
 		run_intern();
 		os.write("t # -1");
+		os.flush();
 	}
 
 	private FileReader read(FileReader is) throws IOException {

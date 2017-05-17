@@ -1,5 +1,5 @@
-function [] = graph2txt( graph )
-fileID = fopen('graph','w');
+function [] = graph2txt( graph, file_name )
+fileID = fopen(file_name, 'w');
 m = 0;
 for i = 1 : length(graph)
     for j = 1 : length(graph{i})

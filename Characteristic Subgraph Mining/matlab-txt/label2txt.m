@@ -1,6 +1,6 @@
-function [] = label2txt( label, graph )
+function [] = label2txt( label, graph, file_name )
 % need graph to identify the number of graphs in each bag
-fileID = fopen('label','w');
+fileID = fopen(file_name, 'w');
 m = 0;
 for i = 1 : length(label)
     for j = 1 : length(graph{i})

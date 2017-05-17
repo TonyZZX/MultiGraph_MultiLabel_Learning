@@ -13,8 +13,8 @@ public class Main {
 		int nodeMax = Integer.MAX_VALUE;
 		int nodeMin = 2;
 		int subgraphMax = 600;
-		String graphFileName = "graph";
-		String labelFileName = "label";
+		String graphFileName = "MSRC_graph_train_GT_9x15";
+		String labelFileName = "MSRC_label_train_GT_9x15";
 		
 		File readfile = new File(graphFileName);
 		File writefile = new File(readfile.getName() + "_result");
