@@ -6,7 +6,7 @@ data = importdata('RUN_2_list.txt');
 current_time = datestr(clock, 'yy_mm_dd_HH_MM');
 out_file_name = ['experiment_result_', current_time, '.txt'];
 fileID = fopen(out_file_name, 'w');
-fprintf(fileID, 'name\tfre\ttime\tsubg\tfs\tMIML\tratio\thn\tHammingLoss\tRankingLoss\tOneError\tCoverage\tAverage_Precision\ttr_time\tte_time\n');
+fprintf(fileID, 'name\tfre\ttime\tsubg\tfs\tMIML\tratio\thn\tcost\tHammingLoss\tRankingLoss\tOneError\tCoverage\tAverage_Precision\ttr_time\tte_time\n');
 
 for i = 1 : length(data)
     fprintf('Processing: %d/%d\n', i, length(data));
@@ -48,6 +48,7 @@ for i = 1 : length(data)
     % MIML
     out_file_name = ['experiment_result_', current_time, '.txt'];
     MIML(file_name, out_file_name);
+    clc;
     clearvars -except data current_time i
 end
 disp('Done!');

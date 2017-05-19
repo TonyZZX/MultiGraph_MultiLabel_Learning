@@ -19,7 +19,6 @@ function [  ] = MIML( file_name, out_file_name )
     ratio = [0.2, 0.4, 0.6, 0.8];
     hn = [100, 150, 200];
     
-    
     fileID = fopen(out_file_name, 'a');
     %fprintf(fileID, 'name\tfre\ttime\tsubg\tfs\tMIML\tratio\thn\tHammingLoss\tRankingLoss\tOneError\tCoverage\tAverage_Precision\ttr_time\tte_time\n');
     
@@ -29,22 +28,27 @@ function [  ] = MIML( file_name, out_file_name )
         for j = 1 : length(hn)
             fprintf('Processing: %d/%d, %d/%d\n', i, length(ratio), j, length(hn));
             [HammingLoss, RankingLoss, OneError, Coverage, Average_Precision, tr_time, te_time] = MIMLSVM(instance_train, label_train, instance_test, label_test, ratio(i), hn(j));
-            fprintf(fileID, '%s\t%s\t%s\t%s\t%s\tELM\t%f\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n', dataset_name, fre, time, subg, fs, ratio(i), hn(j), HammingLoss, RankingLoss, OneError, Coverage, Average_Precision, tr_time, te_time);
-            clc;
+            fprintf(fileID, '%s\t%s\t%s\t%s\t%s\tELM\t%f\t%d\tNULL\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n', dataset_name, fre, time, subg, fs, ratio(i), hn(j), HammingLoss, RankingLoss, OneError, Coverage, Average_Precision, tr_time, te_time);
         end
     end
     rmpath('../MIML/MIMLELM_LiChenGuang');
     
-%     % SVM
-%     addpath('../MIML/MIMLSVM_ZhouZhiHua');
-%     for i = 1 : length(ratio)
-%         for j = 1 : length(hn)
-%             [HammingLoss, RankingLoss, OneError, Coverage, Average_Precision, tr_time, te_time] = MIMLSVM(instance_train, label_train, instance_test, label_test, ratio(i), hn(j));
-%             fprintf(fileID, '%s\t%f\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n', common_out_str, ratio(i), hn(j), HammingLoss, RankingLoss, OneError, Coverage, Average_Precision, tr_time, te_time);
-%             clc;
-%         end
-%     end
-%     rmpath('../MIML/MIMLSVM_ZhouZhiHua');
+    % SVM
+    svm.type = 'RBF';
+    svm.para = 0.2;
+    cost = [1, 3, 5];
+    
+    addpath('../MIML/MIMLSVM_ZhouZhiHua');
+    for i = 1 : length(ratio)
+        for j = 1 : length(hn)
+            for k = 1 : length(cost)
+                fprintf('Processing: %d/%d, %d/%d, %d/%d\n', i, length(ratio), j, length(hn), k, length(cost));
+                [HammingLoss, RankingLoss, OneError, Coverage, Average_Precision, ~, ~, tr_time, te_time] = MIMLSVM(instance_train, label_train, instance_test, label_test, ratio(i), svm, cost(k));
+                fprintf(fileID, '%s\t%s\t%s\t%s\t%s\tSVM\t%f\tNULL\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n', dataset_name, fre, time, subg, fs, ratio(i), cost(k), HammingLoss, RankingLoss, OneError, Coverage, Average_Precision, tr_time, te_time);
+            end
+        end
+    end
+    rmpath('../MIML/MIMLSVM_ZhouZhiHua');
     delete train_data*;
     delete test_data*;
-    end
+end
