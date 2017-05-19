@@ -30,6 +30,7 @@ public class gSpan {
 	private long maxpat_min;
 	private long maxpat_max;
 	private boolean directed;
+	private boolean allowPrint;
 	private FileWriter os;
 
 	/*
@@ -37,7 +38,7 @@ public class gSpan {
 	 */
 	private NavigableMap<Integer, NavigableMap<Integer, Integer>> singleVertex;
 	private NavigableMap<Integer, Integer> singleVertexLabel;
-	
+
 	// 扩展：记录频繁子图出现在哪些图中
 	// map<子图编号, List（都出现在哪些图里）>
 	public NavigableMap<Integer, ArrayList<Integer>> appearedGraphMap;
@@ -52,24 +53,28 @@ public class gSpan {
 
 		singleVertex = new TreeMap<>();
 		singleVertexLabel = new TreeMap<>();
-		
+
 		appearedGraphMap = new TreeMap<>();
 		subgraphMap = new TreeMap<>();
 	}
 
-	public void run(FileReader is, FileWriter _os, long _minsup, long _maxpat_max, long _maxpat_min, boolean _directed)
-			throws IOException {
+	public void run(FileReader is, FileWriter _os, long _minsup, long _maxpat_max, long _maxpat_min, boolean _directed,
+			boolean allowPrint) throws IOException {
 		os = _os;
 		ID = 0;
 		minsup = _minsup;
 		maxpat_min = _maxpat_min;
 		maxpat_max = _maxpat_max;
 		directed = _directed;
+		this.allowPrint = allowPrint;
 
 		read(is);
 		run_intern();
-		os.write("t # -1");
-		os.flush();
+		
+		if (allowPrint) {
+			os.write("t # -1");
+			os.flush();
+		}
 	}
 
 	private FileReader read(FileReader is) throws IOException {
@@ -81,6 +86,7 @@ public class gSpan {
 				break;
 			TRANS.add(g);
 		}
+		read.close();
 		return is;
 	}
 
@@ -137,7 +143,7 @@ public class gSpan {
 			for (Entry<Integer, NavigableMap<Integer, Integer>> it2 : singleVertex.entrySet()) {
 				counts.set(it2.getKey(), it2.getValue().get(frequent_label));
 			}
-			
+
 			NavigableMap<Integer, Integer> gycounts = new TreeMap<>();
 			for (int n = 0; n < counts.size(); ++n)
 				gycounts.put(n, counts.get(n));
@@ -196,6 +202,11 @@ public class gSpan {
 	 * Special report function for single node graphs.
 	 */
 	private void report_single(Graph g, NavigableMap<Integer, Integer> ncount) throws IOException {
+		if (maxpat_max > maxpat_min && g.size() > maxpat_max)
+			return;
+		if (maxpat_min > 0 && g.size() < maxpat_min)
+			return;
+		
 		int sup = 0;
 		// 增加：记录出现在哪个图中
 		ArrayList<Integer> appearedGraphList = new ArrayList<>();
@@ -206,16 +217,15 @@ public class gSpan {
 				appearedGraphList.add(it.getKey());
 			}
 		}
-
-		if (maxpat_max > maxpat_min && g.size() > maxpat_max)
-			return;
-		if (maxpat_min > 0 && g.size() < maxpat_min)
-			return;
-
-		os.write("t # " + ID + " * " + sup + System.getProperty("line.separator"));
+		
 		appearedGraphMap.put((int) ID, appearedGraphList);
 		subgraphMap.put((int) ID, g);
-		g.write(os);
+
+		if (allowPrint) {
+			os.write("t # " + ID + " * " + sup + System.getProperty("line.separator"));
+			g.write(os);
+		}
+		
 		ID++;
 	}
 
@@ -230,11 +240,16 @@ public class gSpan {
 
 		Graph g = new Graph(directed);
 		DFS_CODE.toGraph(g);
-		os.write("t # " + ID + " * " + sup + System.getProperty("line.separator"));
+		
 		// 增加：记录出现在哪个图中
 		appearedGraphMap.put((int) ID, appearedGraphList);
 		subgraphMap.put((int) ID, g);
-		g.write(os);
+		
+		if (allowPrint) {
+			os.write("t # " + ID + " * " + sup + System.getProperty("line.separator"));
+			g.write(os);
+		}
+		
 		++ID;
 	}
 
@@ -409,7 +424,7 @@ public class gSpan {
 
 		return size;
 	}
-	
+
 	// 返回出现在哪些图中
 	private ArrayList<Integer> getAppearedGraphList(Projected projected) {
 		int oid = 0xffffffff;

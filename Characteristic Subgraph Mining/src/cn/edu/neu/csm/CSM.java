@@ -66,6 +66,7 @@ public class CSM {
 			}
 		}
 		graphNum = labelMatrix.size();
+		read.close();
 		return is;
 	}
 
