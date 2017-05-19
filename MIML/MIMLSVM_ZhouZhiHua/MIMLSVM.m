@@ -104,7 +104,7 @@ function [HammingLoss,RankingLoss,OneError,Coverage,Average_Precision,Outputs,Pr
                  str=['-t ',num2str(t),' -c ',num2str(cost)];
              end
          end
-         model=svmtrain(train_target(i,:)',train_data,str);
+         model=svmtrain_(train_target(i,:)',train_data,str);
          
          time_interval=cputime-time_stamp;
          tr_time=tr_time+time_interval;

@@ -1,4 +1,5 @@
-function [Outputs,Pre_Labels,tr_time,te_time]=MIMLSVM(train_bags,train_target,test_bags,test_target,ratio)
+%function [Outputs,Pre_Labels,tr_time,te_time]=MIMLSVM(train_bags,train_target,test_bags,test_target,ratio)
+function [HammingLoss, RankingLoss, OneError, Coverage, Average_Precision, tr_time, te_time]=MIMLSVM(train_bags,train_target,test_bags,test_target,ratio, hn)
 %MIMLSVM implements the MIMLSVM algorithm as shown in [1].
 %
 %N.B.: MIMLSVM employs the Matlab version of Libsvm [2] (available at http://sourceforge.net/projects/svm/) to implement the ML-SVM [3] algorithm as shown in [1]
@@ -122,7 +123,7 @@ function [Outputs,Pre_Labels,tr_time,te_time]=MIMLSVM(train_bags,train_target,te
                 fprintf(fid,'\n');
              end
             fclose(fid);
-            [TY1, TrainingTime, TestingTime, TrainingAccuracy, TestingAccuracy]=ELM(trainnamep, testnamep, 1, 150, 'sig');
+            [TY1, TrainingTime, TestingTime, TrainingAccuracy, TestingAccuracy]=ELM(trainnamep, testnamep, 1, hn, 'sig');
             tr_time=tr_time+TrainingTime;
             te_time=te_time+TestingTime;
              % Outputs=zeros(size(),size());
