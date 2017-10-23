@@ -1,4 +1,4 @@
-﻿package cn.edu.neu.csm;
+package cn.edu.neu.csm;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
