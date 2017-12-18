@@ -1,6 +1,6 @@
 # gSpan
 
-gSpan Java 版
+gSpan in Java
 
 ## Reference
 - [Paper](http://www.cs.ucsb.edu/~xyan/papers/gSpan-short.pdf)
