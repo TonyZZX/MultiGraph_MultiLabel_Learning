@@ -2,4 +2,4 @@
 
 Multi-Graph Multi-Label Learning
 
-Relative paper(in progress): [Paper](/ISM.pdf)
+Relative paper (published): [Paper](/ISM.pdf)
