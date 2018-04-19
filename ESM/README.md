@@ -1,6 +1,6 @@
 # Entropy-Based Sub-graph Mining
 
-It combines the idea of information entropy with [gSpan](gSpan.Java) to mine the informative subgraphs instead of just mining the frequent subgraphs, which enables selecting the more accurate features for the classification. For more details, please see our publication [here](Paper).
+It combines the idea of information entropy with [gSpan][gSpan.Java] to mine the informative subgraphs instead of just mining the frequent subgraphs, which enables selecting the more accurate features for the classification. For more details, please see our publication [here][Paper].
 
 ## Documentation
 

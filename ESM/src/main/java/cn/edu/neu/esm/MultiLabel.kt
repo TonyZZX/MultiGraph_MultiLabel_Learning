@@ -1,4 +1,4 @@
-package cn.edu.neu.esm.model
+package cn.edu.neu.esm
 
 import java.io.BufferedReader
 import java.io.IOException

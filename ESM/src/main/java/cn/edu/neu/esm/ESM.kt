@@ -1,6 +1,5 @@
 package cn.edu.neu.esm
 
-import cn.edu.neu.esm.model.MultiLabel
 import io.github.tonyzzx.gspan.Misc
 import io.github.tonyzzx.gspan.model.*
 
