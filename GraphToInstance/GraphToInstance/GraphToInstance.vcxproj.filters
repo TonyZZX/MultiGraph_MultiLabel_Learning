@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\vflib">
+      <UniqueIdentifier>{4dba565c-9e9a-47f9-80bd-ae5b149a193a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\vflib">
+      <UniqueIdentifier>{7fc28672-2a9e-469a-9bd1-76b2bf04cf0d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="vflib\allocpool.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\argedit.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\argloader.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\argraph.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\dict.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\error.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\gene.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\gene_mesh.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\match.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\sd_state.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\sortnodes.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\state.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\ull_state.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\ull_sub_state.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\vf_mono_state.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\vf_state.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\vf_sub_state.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\vf2_mono_state.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\vf2_state.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\vf2_sub_state.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="vflib\xsubgraph.h">
+      <Filter>头文件\vflib</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="vflib\argedit.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\argloader.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\argraph.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\error.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\gene.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\gene_mesh.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\match.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\sd_state.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\sortnodes.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\ull_state.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\ull_sub_state.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\vf_mono_state.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\vf_state.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\vf_sub_state.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\vf2_mono_state.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\vf2_state.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\vf2_sub_state.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="vflib\xsubgraph.cc">
+      <Filter>源文件\vflib</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="common.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="argh.h">
+      <Filter>头文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
