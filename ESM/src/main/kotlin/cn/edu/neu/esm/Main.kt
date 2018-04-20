@@ -18,7 +18,7 @@ fun main(args: Array<String>) {
                 val esm = ESM()
                 println("ESM is running...")
                 esm.run(inDataReader, inLabelReader, writer, arguments.minSup, arguments.maxNodeNum, arguments.minNodeNum, arguments.maxGraphNum)
-                println("It's done! The result is in ${arguments.outFilePath}.")
+                println("Done! The result is in ${arguments.outFilePath}.")
             })
         })
     })
