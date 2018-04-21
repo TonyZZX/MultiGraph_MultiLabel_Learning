@@ -16,7 +16,7 @@ class Arguments
 public:
 	std::string graph_file_path;
 	std::string sub_graph_file_path;
-	std::string instance_file_path = "instance";
+	std::string instance_file_path = "instance.csv";
 	static Arguments* get_instance(int argc, char *argv[]);
 
 private:

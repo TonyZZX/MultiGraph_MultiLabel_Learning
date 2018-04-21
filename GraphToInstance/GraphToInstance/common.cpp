@@ -204,9 +204,14 @@ void output_instances(std::string file_name, const std::vector<std::vector<short
 	{
 		for (auto &instance : instances)
 		{
-			for (auto &dim : instance)
+			auto instance_size = instance.size();
+			for (auto i = 0; i < instance_size; i++)
 			{
-				instance_file << dim << ' ';
+				instance_file << instance[i];
+				if (i != instance_size - 1)
+				{
+					instance_file << ',';
+				}
 			}
 			instance_file << '\n';
 		}
