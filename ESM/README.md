@@ -58,6 +58,14 @@ usage: ESM
  -s,--sup <arg>         (Required) Minimum support
  ```
 
+ **NOTE:** You need to specify the classpath for `ESM.jar` and its dependency `gSpan.jar`.
+
+ For example, if you are using *Linux*, you need to put all `.jar` in the same folder and run the command:
+
+ ```
+ $ java -cp ESM.jar:./* cn.edu.neu.esm.MainKt
+ ```
+
 2. Directly run it from an IDE.
 
 In this mode, you can only specify the file path of input data set and the minimum support.
