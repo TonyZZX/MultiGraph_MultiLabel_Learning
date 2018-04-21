@@ -1,6 +1,6 @@
 # Graph To Instance
 
-After mining the informative subgraphs, it should use this program to transform graphs to instances. Specially thanks to the graph matching library [VFLib][VFLib]!
+After mining the informative subgraphs, you should use this program to transform graphs to instances. Specially thanks to the graph matching library [VFLib][VFLib]!
 
 ## Documentation
 
