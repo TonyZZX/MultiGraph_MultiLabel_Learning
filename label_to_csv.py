@@ -9,7 +9,7 @@ def label_to_csv(label_file_path, output_file_path=None):
 
     type output_file_path: str
     """
-    if not output_file_path:
+    if output_file_path is None:
         output_file_path = label_file_path + '.csv'
     output_str = ''
     with open(label_file_path) as label_file:
