@@ -34,15 +34,15 @@ def label_to_csv(label_file_path, output_file_path=None):
         output_file.write(output_str)
 
 
-def main():
+def main(args):
+    label_to_csv(args.label, args.output)
+
+
+if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-l', '--label', required=True,
                         type=str, help='(Required) Label file path')
     parser.add_argument('-o', '--output', default=None,
                         type=str, help='Output file path')
     args = parser.parse_args()
-    label_to_csv(args.label, args.output)
-
-
-if __name__ == '__main__':
-    main()
+    main(args)

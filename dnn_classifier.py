@@ -1,6 +1,7 @@
 import pandas as pd
 import tensorflow as tf
 import numpy as np
+import argparse
 
 
 def train_input_fn(features, labels, batch_size=50):
@@ -109,25 +110,36 @@ def build_classifier(train_instances, train_labels):
     return classifier
 
 
-def main():
-    instance_file_path = 'Scenes_instance_6085_703.csv'
-    label_file_path = 'Scenes_label.csv'
-    train_split_perc = 0.8
-    batch_size = 50
-    step = 500
+def main(args):
+    instance_file_path = args.instance
+    label_file_path = args.label
+    train_split_perc = args.train-split
+    batch_size = args.batch-size
+    step = args.step
 
+    print('Loading data...')
+    # Load data.
     (train_instances, train_labels, test_instances, test_labels) = load_data(
         instance_file_path, label_file_path, train_split_perc)
+    print('Done!')
 
+    print('Building classifier...')
+    # Build classifier and train it.
     classifier = build_classifier(train_instances, train_labels)
+    print('Done!')
+
+    print('Training...')
     classifier.train(input_fn=lambda: train_input_fn(
         train_instances, train_labels, batch_size), steps=step)
+    print('Done!')
 
+    print('Evaluating...')
     # Evaluate the model's effectiveness.
     eval_result = classifier.evaluate(input_fn=lambda: eval_input_fn(
         test_instances, test_labels, batch_size))
     print('AUC: {auc:0.3f}, AUC Precision Recall: {auc_precision_recall:0.3f}, Average Loss: {average_loss:0.3f}, Loss: {loss:0.3f}'.format(**eval_result))
 
+    print('Predicting...')
     # Predict
     predictions = classifier.predict(
         input_fn=lambda: eval_input_fn(test_instances, None, batch_size))
@@ -135,9 +147,21 @@ def main():
     for prediction in predictions:
         probabilities = prediction['probabilities']
         for probability in probabilities:
-            print(('{:0.1f}% ').format(probability * 100)),
+            print(('{:0.1f}%').format(probability * 100), end=' ')
         print('')
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--instance', required=True,
+                        type=str, help='(Required) Instance file path')
+    parser.add_argument('-l', '--label', required=True,
+                        type=str, help='(Required) Label file path')
+    parser.add_argument('-t', '--train-split', default=0.8,
+                        type=float, help='Split the data according to the percentage of training set')
+    parser.add_argument('-b', '--batch-size', default=50,
+                        type=int, help='Batch size')
+    parser.add_argument('-s', '--step', default=500,
+                        type=int, help='Training step')
+    args = parser.parse_args()
     main()
