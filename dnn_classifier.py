@@ -113,8 +113,8 @@ def build_classifier(train_instances, train_labels):
 def main(args):
     instance_file_path = args.instance
     label_file_path = args.label
-    train_split_perc = args.train-split
-    batch_size = args.batch-size
+    train_split_perc = args.train_split
+    batch_size = args.batch
     step = args.step
 
     print('Loading data...')
@@ -157,11 +157,11 @@ if __name__ == '__main__':
                         type=str, help='(Required) Instance file path')
     parser.add_argument('-l', '--label', required=True,
                         type=str, help='(Required) Label file path')
-    parser.add_argument('-t', '--train-split', default=0.8,
+    parser.add_argument('-t', '--train_split', default=0.8,
                         type=float, help='Split the data according to the percentage of training set')
-    parser.add_argument('-b', '--batch-size', default=50,
+    parser.add_argument('-b', '--batch', default=50,
                         type=int, help='Batch size')
     parser.add_argument('-s', '--step', default=500,
                         type=int, help='Training step')
     args = parser.parse_args()
-    main()
+    main(args)
