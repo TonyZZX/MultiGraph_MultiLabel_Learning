@@ -22,7 +22,12 @@ def label_to_csv(label_file_path, output_file_path=None):
             elif split_str[0] == 'l' and len(split_str) >= 3:
                 if len(output_str) > 0 and output_str[-1] != '\n':
                     output_str += ','
-                output_str += split_str[2]
+                # Convert labels to 0 or 1.
+                label = int(split_str[2])
+                if label > 0:
+                    output_str += '1'
+                else:
+                    output_str += '0'
     with open(output_file_path, 'w') as output_file:
         output_file.write(output_str)
 
