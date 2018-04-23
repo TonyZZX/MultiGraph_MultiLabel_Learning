@@ -8,16 +8,16 @@ def train_input_fn(features, labels, batch_size=50):
     """
     Input function for training.
 
-    Args:
-
+    Parameters
+    ---
     features: `DataFrame`
 
     labels: `DataFrame`
 
     batch_size: `int`
 
-    Returns:
-
+    Returns
+    ---
     dataset: `BatchDataset`
     """
     dataset = tf.data.Dataset.from_tensor_slices((dict(features), labels))
@@ -31,16 +31,16 @@ def eval_input_fn(features, labels=None, batch_size=50):
     """
     Input function for evaluation or prediction (if labels is None).
 
-    Args:
-
+    Parameters
+    ---
     features: `DataFrame`
 
     labels: `DataFrame`
 
     batch_size: `int`
 
-    Returns:
-
+    Returns
+    ---
     dataset: `BatchDataset`
     """
     dataset = tf.data.Dataset.from_tensor_slices(
@@ -53,16 +53,16 @@ def load_data(instance_file_path, label_file_path, train_split_perc):
     """
     Load data from file, and return splitted training and testing sets.
 
-    Args:
-
+    Parameters
+    ---
     instance_file_path: `str`
 
     label_file_path: `str`
 
     train_split_perc: `float`, split the data according to the percentage of training set
 
-    Returns:
-
+    Returns
+    ---
     train_instances: `DataFrame`
 
     train_labels: `DataFrame`
@@ -90,14 +90,14 @@ def build_classifier(train_instances, train_labels):
     """
     Build a classifier with DNN (Deep Neural Network).
 
-    Args:
-
+    Parameters
+    ---
     train_instances: `DataFrame`
 
     train_labels: `DataFrame`
 
-    Returns:
-
+    Returns
+    ---
     classifier: `DNNEstimator`
     """
     # Create feature columns to describe the data.

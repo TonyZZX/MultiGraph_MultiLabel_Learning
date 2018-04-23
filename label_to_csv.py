@@ -5,8 +5,8 @@ def label_to_csv(label_file_path, output_file_path=None):
     """
     Transform label to .csv file.
 
-    Args:
-
+    Parameters
+    ---
     label_file_path: `str`
 
     output_file_path: `str`
