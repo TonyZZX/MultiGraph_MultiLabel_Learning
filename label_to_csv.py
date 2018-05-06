@@ -1,3 +1,16 @@
+"""
+This script is used to transform label file to csv format.
+
+usage: label_to_csv.py [-h] -l LABEL [-o OUTPUT]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -l LABEL, --label LABEL
+                        (Required) Label file path
+  -o OUTPUT, --output OUTPUT
+                        Output file path
+"""
+
 import argparse
 
 
