@@ -1,7 +1,7 @@
 % This script is used to extract labels of MSRC v2 into one file.
 % We consider the cleaned-up version by Malisiewicz and Efros as our annotations.
 clear;
-list = importdata('./list.txt');
+list = importdata('./list_newsegmentations_mats.txt');
 label_file = fopen('MSRC_v2_label', 'w');
 list_len = length(list);
 for i = 1 : list_len
