@@ -68,10 +68,11 @@ class MultiGraph(object):
             for node_id, node in graph.nodes.items():
                 from_id = new_node_id[node_id]
                 sorted_edge_to_ids = sorted(
-                    new_node_id[edge.to_id] for edge in node.edges if new_node_id[edge.to_id] > from_id)
+                    new_node_id[edge.to_id] for edge in node.edges)
                 for to_id in sorted_edge_to_ids:
-                    # TODO: edge's label is alwasy one.
-                    output_str += 'e {} {} 1\n'.format(from_id, to_id)
+                    if from_id < to_id:
+                        # TODO: edge's label is alwasy one.
+                        output_str += 'e {} {} 1\n'.format(from_id, to_id)
 
         with open(output_file_path, 'w') as output_file:
             output_file.write(output_str)
