@@ -1,12 +1,12 @@
 # Graph To Instance
 
-After mining the informative subgraphs, you should use this program to transform graphs to instances. Specially thanks to the graph matching library [VFLib][VFLib]!
+After mining the informative sub-graphs, you should use this program to transform graphs to instances. Specially thanks to the graph matching library [VFLib][VFLib]!
 
 ## Documentation
 
 ### Graph file format
 
-Below is an example of the format of a text file containing a set of graphs. Each line denodes a vertex (v) or edge (e) with a given label (end of line).
+Below is an example of the format of a text file containing a set of graphs. Each line denotes a vertex (v) or edge (e) with a given label (end of line).
 
 ```
 t # 0

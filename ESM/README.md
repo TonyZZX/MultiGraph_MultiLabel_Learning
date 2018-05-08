@@ -1,12 +1,12 @@
 # Entropy-Based Sub-graph Mining
 
-It combines the idea of information entropy with [gSpan][gSpan.Java] to mine the informative subgraphs instead of just mining the frequent subgraphs, which enables selecting the more accurate features for the classification. For more details, please see our publication [here][Paper].
+It combines the idea of information entropy with [gSpan][gSpan.Java] to mine the informative sub-graphs instead of just mining the frequent sub-graphs, which enables selecting the more accurate features for the classification. For more details, please see our publication [here][Paper].
 
 ## Documentation
 
 ### Graph file format
 
-Below is an example of the format of a text file containing a set of graphs. Each line denodes a vertex (v) or edge (e) with a given label (end of line).
+Below is an example of the format of a text file containing a set of graphs. Each line denotes a vertex (v) or edge (e) with a given label (end of line).
 
 ```
 t # 0
@@ -29,7 +29,7 @@ e 0 2 2
 
 ### Label file format
 
-Below is an example of the format of a text file containing a set of labels. Each line denodes a label (a) for a graph with the same number (t).
+Below is an example of the format of a text file containing a set of labels. Each line denotes a label (a) for a graph with the same number (t).
 
 ```
 t # 0
