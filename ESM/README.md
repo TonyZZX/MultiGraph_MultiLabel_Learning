@@ -48,14 +48,16 @@ This program supports 2 ways to run.
 
 ```
 usage: ESM
- -a,--max-node <arg>    Maximum number of nodes for each sub-graph
- -d,--data <arg>        (Required) File path of data set
- -g,--max-graph <arg>   Maximum number of sub-graphs that will be returned
- -h,--help              Help
- -i,--min-node <arg>    Minimum number of nodes for each sub-graph
- -l,--label <arg>       (Required) File path of label
- -r,--result <arg>      File path of result
- -s,--sup <arg>         (Required) Minimum support
+ -a,--max-node <arg>      Maximum number of nodes for each sub-graph
+ -d,--data <arg>          (Required) File path of data set
+ -e,--max-entropy <arg>   Maximum value of entropy that will be returned
+ -g,--max-graph <arg>     Maximum number of sub-graphs that will be
+                          returned
+ -h,--help                Help
+ -i,--min-node <arg>      Minimum number of nodes for each sub-graph
+ -l,--label <arg>         (Required) File path of label
+ -r,--result <arg>        File path of result
+ -s,--sup <arg>           (Required) Minimum support
  ```
 
  **NOTE:** You need to specify the classpath for `ESM.jar` and its dependency `gSpan.jar`.

@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
             FileWriter(outFile).use({ writer ->
                 val esm = ESM()
                 println("ESM is running...")
-                esm.run(inDataReader, inLabelReader, writer, arguments.minSup, arguments.maxNodeNum, arguments.minNodeNum, arguments.maxGraphNum)
+                esm.run(inDataReader, inLabelReader, writer, arguments.minSup, arguments.maxNodeNum, arguments.minNodeNum, arguments.maxGraphNum, arguments.maxEntropy)
                 println("Done! The result is in ${arguments.outFilePath}.")
             })
         })
@@ -31,6 +31,7 @@ private class Arguments private constructor(private val args: Array<String>) {
     var minNodeNum = 0L
     var maxNodeNum = Long.MAX_VALUE
     var maxGraphNum = Long.MAX_VALUE
+    var maxEntropy = 1.0
     lateinit var outFilePath: String
 
     companion object {
@@ -58,6 +59,7 @@ private class Arguments private constructor(private val args: Array<String>) {
         options.addOption("i", "min-node", true, "Minimum number of nodes for each sub-graph")
         options.addOption("a", "max-node", true, "Maximum number of nodes for each sub-graph")
         options.addOption("g", "max-graph", true, "Maximum number of sub-graphs that will be returned")
+        options.addOption("e", "max-entropy", true, "Maximum value of entropy that will be returned")
         options.addOption("r", "result", true, "File path of result")
         options.addOption("h", "help", false, "Help")
 
@@ -81,6 +83,7 @@ private class Arguments private constructor(private val args: Array<String>) {
         minNodeNum = cmd.getOptionValue("i", "0").toLong()
         maxNodeNum = cmd.getOptionValue("a", Long.MAX_VALUE.toString()).toLong()
         maxGraphNum = cmd.getOptionValue("g", Long.MAX_VALUE.toString()).toLong()
+        maxEntropy = cmd.getOptionValue("e", 1.toString()).toDouble()
         outFilePath = cmd.getOptionValue("r", inDataFilePath + "_result")
     }
 

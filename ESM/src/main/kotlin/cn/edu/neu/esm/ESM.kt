@@ -85,6 +85,8 @@ class ESM {
     private var labelMatrix = ArrayList<MultiLabel>()
     // Maximum number of sub-graphs that will be returned
     private var maxGraphNum = 0L
+    // Maximum value of entropy that will be returned
+    private var maxEntropy = 1.0
     // Number of labels
     private var labelNum = 0L
     // Extension: Record in which graphs frequent sub-graphs appear
@@ -100,11 +102,12 @@ class ESM {
      */
 
     @Throws(IOException::class)
-    fun run(gSpanReader: FileReader, esmReader: FileReader, writer: FileWriter, minSup: Long, maxNodeNum: Long, minNodeNum: Long, maxGraphNum: Long) {
+    fun run(gSpanReader: FileReader, esmReader: FileReader, writer: FileWriter, minSup: Long, maxNodeNum: Long, minNodeNum: Long, maxGraphNum: Long, maxEntropy: Double) {
         runGSpan(gSpanReader, writer, minSup, maxNodeNum, minNodeNum)
 
         id = 0
         this.maxGraphNum = maxGraphNum
+        this.maxEntropy = maxEntropy
 
         readESM(esmReader)
         runInternESM()
@@ -161,11 +164,13 @@ class ESM {
 
     @Throws(IOException::class)
     private fun reportESM(entry: Entry<Int, Double>) {
-        if (id >= maxGraphNum) {
+        if (id >= maxGraphNum)
             return
-        }
 
         val g = subGraphMap[entry.key]
+        val entropy = entry.value
+        if (entropy > maxEntropy)
+            return
         writer!!.write("t # " + id + " * " + entry.value + System.getProperty("line.separator"))
         g?.write(writer)
         ++id
