@@ -5,7 +5,7 @@ from skimage.future import graph
 from skimage.io import imread
 from skimage.segmentation import slic, mark_boundaries
 
-from graph import *
+from model.graph import *
 
 
 def segment(img_path, node_num):

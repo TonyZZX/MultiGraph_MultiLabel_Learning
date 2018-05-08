@@ -1,4 +1,5 @@
 class Edge(object):
+
     def __init__(self, from_id, to_id, label):
         self.from_id = from_id
         self.to_id = to_id
@@ -55,6 +56,9 @@ class MultiGraph(object):
         for graph in multi_graph.graphs:
             self.add_graph(graph)
 
+    def get_num(self):
+        return len(self.graphs)
+
     def write(self, output_file_path):
         output_str = ''
         for i, graph in enumerate(self.graphs):
@@ -71,7 +75,7 @@ class MultiGraph(object):
                     new_node_id[edge.to_id] for edge in node.edges)
                 for to_id in sorted_edge_to_ids:
                     if from_id < to_id:
-                        # TODO: edge's label is alwasy one.
+                        # TODO: edge's label is always one.
                         output_str += 'e {} {} 1\n'.format(from_id, to_id)
 
         with open(output_file_path, 'w') as output_file:
