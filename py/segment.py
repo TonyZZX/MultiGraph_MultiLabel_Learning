@@ -3,7 +3,7 @@ import numpy as np
 from skimage import color
 from skimage.future import graph
 from skimage.io import imread
-from skimage.segmentation import slic, mark_boundaries
+from skimage.segmentation import slic
 
 from model.graph import *
 
