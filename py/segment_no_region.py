@@ -43,11 +43,11 @@ def segment_no_region(img_path, node_num):
             node_id = regions[x][y]
 
             # Add nodes
-            # 5-bit (32 colors)
-            r = int(regions_colors[x][y][0] / 256 * 32)
-            g = int(regions_colors[x][y][1] / 256 * 32)
-            b = int(regions_colors[x][y][2] / 256 * 32)
-            label = r + (g << 5) + (b << 10)
+            # 4-bit (16 colors)
+            r = int(regions_colors[x][y][0] / 256 * 16)
+            g = int(regions_colors[x][y][1] / 256 * 16)
+            b = int(regions_colors[x][y][2] / 256 * 16)
+            label = r + (g << 4) + (b << 8)
             graph_.add_node(node_id, label)
 
             # Add edges

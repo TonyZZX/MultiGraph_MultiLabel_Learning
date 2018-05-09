@@ -1,4 +1,4 @@
-#include "Arguments.h"
+#include "arguments.h"
 
 Arguments* Arguments::arguments_ = nullptr;
 

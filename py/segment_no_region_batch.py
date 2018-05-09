@@ -1,23 +1,19 @@
 """
 This script is used to batch segment images to graphs.
 
-usage: segment_batch.py [-h] -l LIST -n NUM -a LABEL [-p PREFIX]
-                        [-g GRAPH_OUTPUT] [-o LABEL_OUTPUT]
+usage: segment_no_region_batch.py [-h] -l LIST -n NUM [-p PREFIX]
+                                  [-g GRAPH_OUTPUT]
 
 optional arguments:
   -h, --help            show this help message and exit
   -l LIST, --list LIST  (Required) Image list path
   -n NUM, --num NUM     (Required) Number of nodes which each image will have
                         approximately
-  -a LABEL, --label LABEL
-                        (Required) Label file path
   -p PREFIX, --prefix PREFIX
                         Specify the prefix of image path if the list does not
                         contains it
   -g GRAPH_OUTPUT, --graph_output GRAPH_OUTPUT
                         Output graph file path
-  -o LABEL_OUTPUT, --label_output LABEL_OUTPUT
-                        Output label file path
 """
 
 import argparse

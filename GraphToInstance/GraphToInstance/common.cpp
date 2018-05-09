@@ -42,22 +42,32 @@ std::vector<Graph> read_graphs(std::string file_name)
 			{
 				if (ed.NodeCount() > 0)
 				{
-					graphs.push_back(Graph(&ed));
+					auto g = Graph(&ed);
+					g.SetNodeDestroyer(new LabelDestroyer());
+					g.SetNodeComparator(new LabelComparator());
+					g.SetEdgeDestroyer(new LabelDestroyer());
+					g.SetEdgeComparator(new LabelComparator());
+					graphs.push_back(g);
 				}
 				ed = ARGEdit();
 			}
 			else if (splitStr[0] == "v" && splitStr.size() >= 3)
 			{
-				ed.InsertNode((void*)stoi(splitStr[2]));
+				ed.InsertNode(new Label(stoi(splitStr[2])));
 			}
 			else if (splitStr[0] == "e" && splitStr.size() >= 4)
 			{
-				ed.InsertEdge(stoi(splitStr[1]), stoi(splitStr[2]), (void*)stoi(splitStr[3]));
+				ed.InsertEdge(stoi(splitStr[1]), stoi(splitStr[2]), new Label(stoi(splitStr[3])));
 			}
 		}
 		if (ed.NodeCount() > 0)
 		{
-			graphs.push_back(Graph(&ed));
+			auto g = Graph(&ed);
+			g.SetNodeDestroyer(new LabelDestroyer());
+			g.SetNodeComparator(new LabelComparator());
+			g.SetEdgeDestroyer(new LabelDestroyer());
+			g.SetEdgeComparator(new LabelComparator());
+			graphs.push_back(g);
 		}
 	}
 	else
@@ -87,7 +97,7 @@ std::vector<Graph> keep_super_graphs(std::vector<Graph> &graphs)
 	for (auto i = 0; i < graphs_size; i++)
 	{
 		bool is_matched = false;
-		print_progress(i, graphs_size);
+		print_progress(i, (int)graphs_size);
 		for (auto j = 0; j < graphs_size; j++)
 		{
 			if (i == j)
@@ -115,7 +125,7 @@ std::vector<std::vector<short>> transform_instances(std::vector<Graph> &graphs, 
 	std::vector<std::vector<short>> instances(graphs_size);
 	for (auto i = 0; i < graphs_size; i++)
 	{
-		print_progress(i, graphs_size);
+		print_progress(i, (int)graphs_size);
 		std::vector<short> instance(features_size);
 		for (auto j = 0; j < features_size; j++)
 		{

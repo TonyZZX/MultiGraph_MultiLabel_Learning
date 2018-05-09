@@ -47,18 +47,17 @@ def segment(img_path, node_num):
                     node_id = nodes[x][y]
 
                     # Add nodes
-                    # 5-bit (32 colors)
-                    r = int(nodes_colors[x][y][0] / 256 * 32)
-                    g = int(nodes_colors[x][y][1] / 256 * 32)
-                    b = int(nodes_colors[x][y][2] / 256 * 32)
-                    label = r + (g << 5) + (b << 10)
+                    # 4-bit (16 colors)
+                    r = int(nodes_colors[x][y][0] / 256 * 16)
+                    g = int(nodes_colors[x][y][1] / 256 * 16)
+                    b = int(nodes_colors[x][y][2] / 256 * 16)
+                    label = r + (g << 4) + (b << 8)
                     region_graph.add_node(node_id, label)
 
                     # Add edges
-                    for xx in [x - 1, x, x + 1]:
-                        for yy in [y - 1, y, y + 1]:
-                            if xx < x_len and xx > 0 and yy < y_len and yy > 0 and regions[xx][yy] == i:
-                                region_graph.add_edge(node_id, nodes[xx][yy])
+                    for xx, yy in [(x, y + 1), (x, y - 1), (x + 1, y), (x - 1, y)]:
+                        if xx < x_len and xx > 0 and yy < y_len and yy > 0 and regions[xx][yy] == i:
+                            region_graph.add_edge(node_id, nodes[xx][yy])
 
         graphs.add_graph(region_graph)
 

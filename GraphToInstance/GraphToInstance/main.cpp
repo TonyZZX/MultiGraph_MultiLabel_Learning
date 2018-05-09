@@ -1,4 +1,4 @@
-#include "Arguments.h"
+#include "arguments.h"
 #include "common.h"
 
 using namespace std;

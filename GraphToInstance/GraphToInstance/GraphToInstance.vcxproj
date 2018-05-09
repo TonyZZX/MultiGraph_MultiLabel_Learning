@@ -19,8 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Arguments.h" />
+    <ClInclude Include="arguments.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="label.h" />
     <ClInclude Include="vflib\allocpool.h" />
     <ClInclude Include="vflib\argedit.h" />
     <ClInclude Include="vflib\argloader.h" />
@@ -45,9 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="argh.h" />
-    <ClCompile Include="Arguments.cpp" />
+    <ClCompile Include="arguments.cpp" />
     <ClCompile Include="common.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="label.cpp" />
     <ClCompile Include="vflib\argedit.cc" />
     <ClCompile Include="vflib\argloader.cc" />
     <ClCompile Include="vflib\argraph.cc" />

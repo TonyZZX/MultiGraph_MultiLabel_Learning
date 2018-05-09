@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "label.h"
 #include "vflib\argraph.h"
 #include "vflib\argedit.h"
 #include "vflib\vf2_mono_state.h"

@@ -87,7 +87,10 @@
     <ClInclude Include="common.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Arguments.h">
+    <ClInclude Include="arguments.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="label.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -155,7 +158,10 @@
     <ClCompile Include="argh.h">
       <Filter>头文件</Filter>
     </ClCompile>
-    <ClCompile Include="Arguments.cpp">
+    <ClCompile Include="arguments.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="label.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
