@@ -1,5 +1,4 @@
 import numpy as np
-
 from skimage import color
 from skimage.future import graph
 from skimage.io import imread
