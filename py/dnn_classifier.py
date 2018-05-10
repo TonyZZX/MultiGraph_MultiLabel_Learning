@@ -77,12 +77,18 @@ def load_data(instance_file_path, label_file_path, train_split_perc):
     # Convert column names to str. (Or it will get errors when training them.)
     instances.columns = [str(column) for column in instances.columns]
     labels.columns = [str(column) for column in labels.columns]
-    # Randomly split data into training set and testing set. (80% train - 20% test)
-    mask = np.random.rand(len(instances)) < train_split_perc
-    train_instances = instances[mask]
-    train_labels = labels[mask]
-    test_instances = instances[~mask]
-    test_labels = labels[~mask]
+    if train_split_perc == 1.0:
+        train_instances = instances
+        train_labels = labels
+        test_instances = instances
+        test_labels = labels
+    else:
+        # Randomly split data into training set and testing set. (80% train - 20% test)
+        mask = np.random.rand(len(instances)) < train_split_perc
+        train_instances = instances[mask]
+        train_labels = labels[mask]
+        test_instances = instances[~mask]
+        test_labels = labels[~mask]
     return (train_instances, train_labels, test_instances, test_labels)
 
 
@@ -104,9 +110,12 @@ def build_classifier(train_instances, train_labels):
     feature_columns = []
     for key in train_instances.keys():
         feature_columns.append(tf.feature_column.numeric_column(key=key))
+    # Represent the categorical column as an embedding column.
+    embedding_feature_columns = tf.feature_column.embedding_column(
+        categorical_column=feature_columns, dimension=9)
     # Build
     classifier = tf.contrib.estimator.DNNEstimator(head=tf.contrib.estimator.multi_label_head(
-        n_classes=len(train_labels.columns)), feature_columns=feature_columns, hidden_units=[5, 5])
+        n_classes=len(train_labels.columns)), feature_columns=embedding_feature_columns, hidden_units=[5, 5])
     return classifier
 
 
