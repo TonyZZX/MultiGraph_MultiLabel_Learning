@@ -1,4 +1,4 @@
-# Created by https://www.gitignore.io/api/python
+# Created by https://www.gitignore.io/api/python,visualstudiocode
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
@@ -100,5 +100,13 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+### VisualStudioCode ###
+.vscode/*
+# !.vscode/settings.json
+!.vscode/tasks.json
+# !.vscode/launch.json
+!.vscode/extensions.json
+.history
 
-# End of https://www.gitignore.io/api/python
+
+# End of https://www.gitignore.io/api/python,visualstudiocode

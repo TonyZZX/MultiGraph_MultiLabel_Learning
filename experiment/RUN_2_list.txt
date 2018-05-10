@@ -1,2 +1,0 @@
-corel5k/corel5k_6x8x12_omgr_CSM_fre50_time8520ms_subg600
-corel5k/corel5k_6x9x15_omgr_CSM_fre50_time27543ms_subg600
