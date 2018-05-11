@@ -29,20 +29,14 @@ e 0 2 2
 
 ### How to run
 
-This program supports 2 ways to run.
-
-1. From the command line.
-
 ```
--g, --graph <arg>        (Required) File path of graphs
 -h, --help       Help
+-g, --graph <arg>        (Required) File path of graphs
+-s, --sub-graph <arg>    File path of sub-graphs
 -i, --instance <arg>     File path of output instances
--s, --sub-graph <arg>    (Required) File path of sub-graphs
+-o, --output-feature <arg>       If not none, save features to the path
+-l, --load-feature <arg>         If not none, load features from the path
  ```
-
-2. Directly run it from an IDE.
-
-In this mode, you can only specify the file path of input data set and the minimum support.
 
 ## Reference
 

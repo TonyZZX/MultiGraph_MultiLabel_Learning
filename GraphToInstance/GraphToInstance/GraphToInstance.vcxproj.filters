@@ -84,12 +84,6 @@
     <ClInclude Include="vflib\xsubgraph.h">
       <Filter>头文件\vflib</Filter>
     </ClInclude>
-    <ClInclude Include="common.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="arguments.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="label.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -152,14 +146,8 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="common.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="argh.h">
       <Filter>头文件</Filter>
-    </ClCompile>
-    <ClCompile Include="arguments.cpp">
-      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="label.cpp">
       <Filter>源文件</Filter>

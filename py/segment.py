@@ -1,3 +1,20 @@
+"""
+Segment image
+
+usage: segment.py [-h] -i IMAGE -n NODE [-o OUTPUT]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i IMAGE, --image IMAGE
+                        (Required) Image file path
+  -n NODE, --node NODE  (Required) Number of nodes which each image will have
+                        approximately
+  -o OUTPUT, --output OUTPUT
+                        Output subgraph file path
+"""
+
+import argparse
+
 import numpy as np
 from skimage import color
 from skimage.future import graph
@@ -111,3 +128,26 @@ def segment_region(img_path, node_num):
                     graph_.add_edge(node_id, regions[xx][yy])
 
     return graph_
+
+
+def main(args):
+    img_path = args.image
+    node_num = args.node
+    output_file_path = args.output
+
+    graph_ = segment_region(img_path, node_num)
+    graphs = MultiGraph()
+    graphs.add_graph(graph_)
+    graphs.write(output_file_path)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--image', required=True,
+                        type=str, help='(Required) Image file path')
+    parser.add_argument('-n', '--node', required=True, type=int,
+                        help='(Required) Number of nodes which each image will have approximately')
+    parser.add_argument('-o', '--output', default='subgraph',
+                        type=str, help='Output subgraph file path')
+    args = parser.parse_args()
+    main(args)

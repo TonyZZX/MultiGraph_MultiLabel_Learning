@@ -18,9 +18,9 @@ However, I rewrote some of them to realize `MGML` Learning and all these codes c
 
 ## How to run
 
-1. Segment original images into graphs
+1. Segment original images to graphs
 ```
-$ python ./py/segment_batch.py -l ./MSRC_v2/list_Images.txt -n 500 -p ./MSRC_v2/Images/ -g ./result/MSRC_v2_graph
+$ python3 ./py/segment_batch.py -l ./MSRC_v2/list_Images.txt -n 500 -p ./MSRC_v2/Images/ -g ./result/MSRC_v2_graph
 ```
 2. Mine the informative sub-graphs
 ```
@@ -30,19 +30,17 @@ $ cd ../../
 ```
 3. Transform to instances
 ```
-$ cd ./GraphToInstance/GraphToInstance/
-$ ./GraphToInstance -g ../../result/MSRC_v2_graph -s ../../result/MSRC_v2_subgraph -i ../../result/MSRC_v2_instance.csv
-$ cd ../../
+$ ./GraphToInstance/GraphToInstance/GraphToInstance -g ./result/MSRC_v2_graph -s ./result/MSRC_v2_subgraph -i ./result/MSRC_v2_instance.csv -o ./result/features/
 ```
 4. Transform label file to `.csv` file
 ```
-$ python ./py/label_to_csv.py -l ./MSRC_v2/MSRC_v2_label -o ./result/MSRC_v2_label.csv
+$ python3 ./py/label_to_csv.py -l ./MSRC_v2/MSRC_v2_label -o ./result/MSRC_v2_label.csv
 ```
 6. Build the DNN classifier
 ```
-$ python ./py/classifier.py -i ./result/MSRC_v2_instance.csv -l ./result/MSRC_v2_label.csv -s 5000 -m ./result/MSRC_v2_model.h5
+$ python3 ./py/classifier.py -i ./result/MSRC_v2_instance.csv -l ./result/MSRC_v2_label.csv -s 5000 -m ./result/MSRC_v2_model.h5
 ```
 7. Predict
 ```
-$ python ./py/predict.py -i ./result/MSRC_v2_instance.csv -m ./result/MSRC_v2_model.h5 -d 23 -l ./result/MSRC_v2_label.csv
+$ python3 ./py/predict.py -i ./result/MSRC_v2_instance.csv -m ./result/MSRC_v2_model.h5 -d 23 -l ./result/MSRC_v2_label.csv
 ```
