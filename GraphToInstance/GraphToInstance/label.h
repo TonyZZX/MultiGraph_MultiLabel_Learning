@@ -4,19 +4,19 @@
 
 class Label
 {
-public:
+  public:
 	int label;
 	Label(int label);
 };
 
 class LabelDestroyer : public AttrDestroyer
 {
-public:
-	virtual void destroy(void * l);
+  public:
+	virtual void destroy(void *l);
 };
 
 class LabelComparator : public AttrComparator
 {
-public:
-	virtual bool compatible(void * m, void * n);
+  public:
+	virtual bool compatible(void *m, void *n);
 };

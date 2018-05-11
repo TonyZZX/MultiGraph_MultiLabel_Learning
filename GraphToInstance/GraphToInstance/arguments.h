@@ -7,15 +7,15 @@
 
 class Arguments
 {
-public:
+  public:
 	std::string graph_file_path;
 	std::string sub_graph_file_path;
 	std::string instance_file_path = "instance.csv";
-	static Arguments* get_instance(int argc, char *argv[]);
+	static Arguments *get_instance(int argc, char *argv[]);
 
-private:
+  private:
 	Arguments(int argc, char *argv[]);
-	static Arguments* arguments_;
+	static Arguments *arguments_;
 	int argc_;
 	char **argv_;
 	// User inputs args.

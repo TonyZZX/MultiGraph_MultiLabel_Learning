@@ -23,6 +23,5 @@ int main(int argc, char *argv[])
 	output_instances(arguments->instance_file_path, instances);
 	cout << "All done! There are " << graphs.size() << " instances and each instance has " << features.size() << " dimentions.\n";
 
-	system("pause");
 	return EXIT_SUCCESS;
 }

@@ -1,6 +1,9 @@
 #include "common.h"
 
-std::vector<std::string> split(std::string data, char delim, int rep) {
+#include <climits>
+
+std::vector<std::string> split(std::string data, char delim, int rep)
+{
 	std::vector<std::string> flds;
 	std::string work = data;
 	std::string buf = "";

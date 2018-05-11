@@ -15,3 +15,35 @@ Innovative algorithm `ESM` mentioned in the paper could be found [here](/ESM).
 Unfortunately, since we used some pioneers' codes, `Graph Segment`, `MIML-ELM` and `MIML-SVM` cannot be public due to confidentiality agreement.
 
 However, I rewrote some of them to realize `MGML` Learning and all these codes can be used freely as long as you follow the [license](/LICENSE). Although the effectiveness and efficiency cannot be guaranteed as well as in the paper, you can still experience our advanced `MGML` algorithm!
+
+## How to run
+
+1. Segment original images into graphs
+
+2. Mine the informative sub-graphs
+
+3. Transform to instances
+
+4. Transform label file to `.csv` file
+
+6. Build the DNN classifier
+    
+7. Predict
+
+
+
+
+python ./py/segment_batch.py -l ./MSRC_v2/list_Images.txt -n 500 -p ./MSRC_v2/Images/ -g ./result/MSRC_v2_graph
+
+cd ./ESM/target/
+java -cp ESM-1.1-jar-with-dependencies.jar:./* cn.edu.neu.esm.MainKt -d MSRC_v2_graph -l MSRC_v2_label -s 3 -e 0.25 -r ../../result/MSRC_v2_subgraph
+cd ../../
+
+./GraphToInstance -g ../../result/MSRC_v2_graph -s ../../result/MSRC_v2_subgraph -i ../../result/MSRC_v2_instance_test.csv
+.\GraphToInstance.exe -g .\MSRC_v2_graph -s .\MSRC_v2_subgraph -i .\MSRC_v2_instance.csv
+
+python .\label_to_csv.py -l ..\MSRC_v2\MSRC_v2_label -o ..\result\MSRC_v2_label.csv
+
+python .\classifier.py -i ..\result\MSRC_v2_instance.csv -l ..\result\MSRC_v2_label.csv
+
+python .\predict.py -i ..\result\MSRC_v2_instance_sup3_e0-25.csv -m ..\result\MSRC_v2_model.h5 -d 23 -l ..\result\MSRC_v2_label.csv

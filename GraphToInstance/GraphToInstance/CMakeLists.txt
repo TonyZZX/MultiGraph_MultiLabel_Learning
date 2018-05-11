@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.5)
+project(GraphToInstance)
+set(CMAKE_CXX_STANDARD 11)
+aux_source_directory(. DIR_SRCS)
+add_subdirectory(vflib)
+add_executable(GraphToInstance ${DIR_SRCS})
+target_link_libraries(GraphToInstance VFLib2)

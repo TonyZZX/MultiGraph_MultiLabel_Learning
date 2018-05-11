@@ -6,10 +6,10 @@
 #include <vector>
 
 #include "label.h"
-#include "vflib\argraph.h"
-#include "vflib\argedit.h"
-#include "vflib\vf2_mono_state.h"
-#include "vflib\match.h"
+#include "vflib/argraph.h"
+#include "vflib/argedit.h"
+#include "vflib/vf2_mono_state.h"
+#include "vflib/match.h"
 
 /*
 split: receives a char delimiter; returns a vector of strings
