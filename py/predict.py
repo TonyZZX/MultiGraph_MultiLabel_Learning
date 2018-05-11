@@ -1,3 +1,22 @@
+"""
+Use saved model to predict new instances.
+Return format is JSON.
+
+usage: predict.py [-h] -i INSTANCE -m MODEL -d DIMENSION [-l LABEL]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i INSTANCE, --instance INSTANCE
+                        (Required) Instance file path
+  -m MODEL, --model MODEL
+                        (Required) Saved model path
+  -d DIMENSION, --dimension DIMENSION
+                        (Required) Output (label) dimension
+  -l LABEL, --label LABEL
+                        Label file path. If not none, the prediction will be
+                        evaluated
+"""
+
 import argparse
 import json
 import os
