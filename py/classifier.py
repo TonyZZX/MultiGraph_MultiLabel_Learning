@@ -1,3 +1,22 @@
+"""
+Build a classifier model with Keras.
+
+usage: classifier.py [-h] -i INSTANCE -l LABEL [-s STEP] [-p PROCESS]
+                     [-m SAVE_MODEL]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i INSTANCE, --instance INSTANCE
+                        (Required) Instance file path
+  -l LABEL, --label LABEL
+                        (Required) Label file path
+  -s STEP, --step STEP  Training step
+  -p PROCESS, --process PROCESS
+                        If show process during training
+  -m SAVE_MODEL, --save_model SAVE_MODEL
+                        Path of outputing trained model, if not none
+"""
+
 import argparse
 import os
 
@@ -53,15 +72,15 @@ def main(args):
     model.fit(train_instances, train_labels, epochs=step,
               batch_size=batch_size, verbose=show_process)
 
-    # Effectiveness evaluation
-    score = model.evaluate(train_instances, train_labels,
-                           batch_size=batch_size)
-    print('Test loss:', score[0])
-    print('Test accuracy:', score[1])
-
     # Save trained model
     if save_model_path:
         model.save(save_model_path)
+
+    # # Effectiveness evaluation
+    # score = model.evaluate(train_instances, train_labels,
+    #                        batch_size=batch_size)
+    # print('Test loss: ', score[0])
+    # print('Test accuracy: ', score[1])
 
 
 if __name__ == '__main__':
