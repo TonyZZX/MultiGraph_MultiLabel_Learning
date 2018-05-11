@@ -19,31 +19,30 @@ However, I rewrote some of them to realize `MGML` Learning and all these codes c
 ## How to run
 
 1. Segment original images into graphs
-
+```
+$ python ./py/segment_batch.py -l ./MSRC_v2/list_Images.txt -n 500 -p ./MSRC_v2/Images/ -g ./result/MSRC_v2_graph
+```
 2. Mine the informative sub-graphs
-
+```
+$ cd ./ESM/target/
+$ java -cp ESM-1.1-jar-with-dependencies.jar:./* cn.edu.neu.esm.MainKt -d MSRC_v2_graph -l MSRC_v2_label -s 3 -e 0.25 -r ../../result/MSRC_v2_subgraph
+$ cd ../../
+```
 3. Transform to instances
-
+```
+$ cd ./GraphToInstance/GraphToInstance/
+$ ./GraphToInstance -g ../../result/MSRC_v2_graph -s ../../result/MSRC_v2_subgraph -i ../../result/MSRC_v2_instance.csv
+$ cd ../../
+```
 4. Transform label file to `.csv` file
-
+```
+$ python ./py/label_to_csv.py -l ./MSRC_v2/MSRC_v2_label -o ./result/MSRC_v2_label.csv
+```
 6. Build the DNN classifier
-    
+```
+$ python ./py/classifier.py -i ./result/MSRC_v2_instance.csv -l ./result/MSRC_v2_label.csv -s 5000 -m ./result/MSRC_v2_model.h5
+```
 7. Predict
-
-
-
-
-python ./py/segment_batch.py -l ./MSRC_v2/list_Images.txt -n 500 -p ./MSRC_v2/Images/ -g ./result/MSRC_v2_graph
-
-cd ./ESM/target/
-java -cp ESM-1.1-jar-with-dependencies.jar:./* cn.edu.neu.esm.MainKt -d MSRC_v2_graph -l MSRC_v2_label -s 3 -e 0.25 -r ../../result/MSRC_v2_subgraph
-cd ../../
-
-./GraphToInstance -g ../../result/MSRC_v2_graph -s ../../result/MSRC_v2_subgraph -i ../../result/MSRC_v2_instance_test.csv
-.\GraphToInstance.exe -g .\MSRC_v2_graph -s .\MSRC_v2_subgraph -i .\MSRC_v2_instance.csv
-
-python .\label_to_csv.py -l ..\MSRC_v2\MSRC_v2_label -o ..\result\MSRC_v2_label.csv
-
-python .\classifier.py -i ..\result\MSRC_v2_instance.csv -l ..\result\MSRC_v2_label.csv
-
-python .\predict.py -i ..\result\MSRC_v2_instance_sup3_e0-25.csv -m ..\result\MSRC_v2_model.h5 -d 23 -l ..\result\MSRC_v2_label.csv
+```
+$ python ./py/predict.py -i ./result/MSRC_v2_instance.csv -m ./result/MSRC_v2_model.h5 -d 23 -l ./result/MSRC_v2_label.csv
+```
