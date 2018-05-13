@@ -15,7 +15,7 @@
 
 using namespace std;
 
-using LabeledGraph = ARGraph<Label, Label>;
+using LabelGraph = ARGraph<Label, Label>;
 
 // File path of graphs
 string graph_file_path;
@@ -31,29 +31,31 @@ string saved_feature_list_path;
 void init_args(int argc, char *argv[]);
 
 // Read graphs from file.
-vector<LabeledGraph> read_graphs(string file_name);
+vector<LabelGraph> read_graphs(string file_name);
 
 // Only return super-graphs.
-vector<LabeledGraph> keep_super_graphs(vector<LabeledGraph> &graphs);
+vector<LabelGraph> keep_super_graphs(vector<LabelGraph> &graphs);
 
-void save_features(vector<LabeledGraph> &graphs, string output_saved_feature_path);
+void save_features(vector<LabelGraph> &graphs, string output_saved_feature_path);
 
-vector<LabeledGraph> load_features(string saved_feature_list_path);
+vector<LabelGraph> load_features(string saved_feature_list_path);
 
 //Transform graphs to instances according to features
-vector<vector<short>> transform_instances(vector<LabeledGraph> &graphs, vector<LabeledGraph> &features);
+vector<vector<short>> transform_instances(vector<LabelGraph> &graphs, vector<LabelGraph> &features);
 
 // Output instances to file.
 void output_instances(string file_name, const vector<vector<short>> &instances);
+
+LabelGraph new_label_graph(ARGLoader *loader);
 
 int main(int argc, char *argv[])
 {
 	init_args(argc, argv);
 
-	cout << "Reading sub-graphs...\n";
-	vector<LabeledGraph> features;
+	vector<LabelGraph> features;
 	if (saved_feature_list_path == "")
 	{
+		cout << "Reading sub-graphs...\n";
 		// Read informative sub-graphs from file.
 		auto sub_graphs = read_graphs(sub_graph_file_path);
 		cout << "Generating features...\n";
@@ -64,6 +66,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
+		cout << "Reading features...\n";
 		// Load features from the path
 		features = load_features(saved_feature_list_path);
 	}
@@ -107,6 +110,12 @@ void init_args(int argc, char *argv[])
 	cmd({ "-i", "--instance" }, "instance.csv") >> output_instance_path;
 	cmd({ "-o", "--output-feature" }, "") >> output_saved_feature_path;
 	cmd({ "-l", "--load-feature" }, "") >> saved_feature_list_path;
+	if (sub_graph_file_path == "" && saved_feature_list_path == "")
+	{
+		cout << "Must input either sub-graph file path or saved feature list path!\n";
+		print_help();
+		exit(EXIT_FAILURE);
+	}
 }
 
 /*
@@ -141,10 +150,10 @@ vector<string> split(string data, char delim, int rep = 0)
 	return flds;
 }
 
-vector<LabeledGraph> read_graphs(string file_name)
+vector<LabelGraph> read_graphs(string file_name)
 {
 	ifstream graph_file(file_name);
-	vector<LabeledGraph> graphs;
+	vector<LabelGraph> graphs;
 	if (graph_file.is_open())
 	{
 		// The object used to create the graph
@@ -157,11 +166,7 @@ vector<LabeledGraph> read_graphs(string file_name)
 			{
 				if (ed.NodeCount() > 0)
 				{
-					auto g = LabeledGraph(&ed);
-					g.SetNodeDestroyer(new LabelDestroyer());
-					g.SetNodeComparator(new LabelComparator());
-					g.SetEdgeDestroyer(new LabelDestroyer());
-					g.SetEdgeComparator(new LabelComparator());
+					auto g = new_label_graph(&ed);
 					graphs.push_back(g);
 				}
 				ed = ARGEdit();
@@ -177,11 +182,7 @@ vector<LabeledGraph> read_graphs(string file_name)
 		}
 		if (ed.NodeCount() > 0)
 		{
-			auto g = LabeledGraph(&ed);
-			g.SetNodeDestroyer(new LabelDestroyer());
-			g.SetNodeComparator(new LabelComparator());
-			g.SetEdgeDestroyer(new LabelDestroyer());
-			g.SetEdgeComparator(new LabelComparator());
+			auto g = new_label_graph(&ed);
 			graphs.push_back(g);
 		}
 	}
@@ -191,7 +192,7 @@ vector<LabeledGraph> read_graphs(string file_name)
 }
 
 // return if g1 is a sub-graph of g2 (using monomorphism - VF2 algorithm)
-bool is_vf2mono_match(LabeledGraph *g1, LabeledGraph *g2)
+bool is_vf2mono_match(LabelGraph *g1, LabelGraph *g2)
 {
 	// Create the initial state of the search space
 	VF2MonoState s0(g1, g2);
@@ -200,10 +201,10 @@ bool is_vf2mono_match(LabeledGraph *g1, LabeledGraph *g2)
 	return match(&s0, &n, ni1, ni2);
 }
 
-vector<LabeledGraph> keep_super_graphs(vector<LabeledGraph> &graphs)
+vector<LabelGraph> keep_super_graphs(vector<LabelGraph> &graphs)
 {
 	auto graphs_size = graphs.size();
-	vector<LabeledGraph> super_graphs;
+	vector<LabelGraph> super_graphs;
 	for (auto i = 0; i < graphs_size; i++)
 	{
 		bool is_matched = false;
@@ -226,7 +227,7 @@ vector<LabeledGraph> keep_super_graphs(vector<LabeledGraph> &graphs)
 	return super_graphs;
 }
 
-void save_features(vector<LabeledGraph> &graphs, string output_saved_feature_path)
+void save_features(vector<LabelGraph> &graphs, string output_saved_feature_path)
 {
 	auto graphs_size = graphs.size();
 	string feature_file_names;
@@ -246,10 +247,10 @@ void save_features(vector<LabeledGraph> &graphs, string output_saved_feature_pat
 	}
 }
 
-vector<LabeledGraph> load_features(string saved_feature_list_path)
+vector<LabelGraph> load_features(string saved_feature_list_path)
 {
 	ifstream feature_list_file(saved_feature_list_path + "list.txt");
-	vector<LabeledGraph> graphs;
+	vector<LabelGraph> graphs;
 	if (feature_list_file.is_open())
 	{
 		string line;
@@ -259,14 +260,14 @@ vector<LabeledGraph> load_features(string saved_feature_list_path)
 			NewAllocator<Label> edge_allocator;
 			ifstream in(line);
 			StreamARGLoader<Label, Label> loader(&node_allocator, &edge_allocator, in);
-			LabeledGraph graph(&loader);
+			auto graph = new_label_graph(&loader);
 			graphs.push_back(graph);
 		}
 	}
 	return graphs;
 }
 
-vector<vector<short>> transform_instances(vector<LabeledGraph> &graphs, std::vector<LabeledGraph> &features)
+vector<vector<short>> transform_instances(vector<LabelGraph> &graphs, std::vector<LabelGraph> &features)
 {
 	auto graphs_size = graphs.size();
 	auto features_size = features.size();
@@ -311,4 +312,14 @@ void output_instances(string file_name, const vector<vector<short>> &instances)
 	}
 	else
 		std::cout << "Unable to open the file.\n";
+}
+
+LabelGraph new_label_graph(ARGLoader *loader)
+{
+	LabelGraph graph(loader);
+	graph.SetNodeDestroyer(new LabelDestroyer());
+	graph.SetNodeComparator(new LabelComparator());
+	graph.SetEdgeDestroyer(new LabelDestroyer());
+	graph.SetEdgeComparator(new LabelComparator());
+	return graph;
 }
