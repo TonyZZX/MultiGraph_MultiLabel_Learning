@@ -19,28 +19,48 @@ However, I rewrote some of them to realize `MGML` Learning and all these codes c
 ## How to run
 
 1. Segment original images to graphs
+
 ```
 $ python3 ./py/segment_batch.py -l ./MSRC_v2/list_Images.txt -n 500 -p ./MSRC_v2/Images/ -g ./result/MSRC_v2_graph
 ```
+
 2. Mine the informative sub-graphs
+
 ```
 $ cd ./ESM/target/
 $ java -cp ESM-1.1-jar-with-dependencies.jar:./* cn.edu.neu.esm.MainKt -d MSRC_v2_graph -l MSRC_v2_label -s 3 -e 0.25 -r ../../result/MSRC_v2_subgraph
 $ cd ../../
 ```
+
 3. Transform to instances
+
 ```
 $ ./GraphToInstance/GraphToInstance/GraphToInstance -g ./result/MSRC_v2_graph -s ./result/MSRC_v2_subgraph -i ./result/MSRC_v2_instance.csv -o ./result/features/
 ```
+
 4. Transform label file to `.csv` file
+
 ```
 $ python3 ./py/label_to_csv.py -l ./MSRC_v2/MSRC_v2_label -o ./result/MSRC_v2_label.csv
 ```
+
 6. Build the DNN classifier
+
 ```
 $ python3 ./py/classifier.py -i ./result/MSRC_v2_instance.csv -l ./result/MSRC_v2_label.csv -s 5000 -m ./result/MSRC_v2_model.h5
 ```
+
 7. Predict
+
 ```
 $ python3 ./py/predict.py -i ./result/MSRC_v2_instance.csv -m ./result/MSRC_v2_model.h5 -d 23 -l ./result/MSRC_v2_label.csv
+```
+
+## Server
+
+I also used `Python` to set up a simple server of `MGML` image classification. You may upload an image to the server and get the `JSON` response of prediction labels.
+
+```
+$ python3 ./server.py
+$ curl -X POST -F "data=@../MSRC_v2/Images/1_1_s.bmp" localhost:1696
 ```

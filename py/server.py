@@ -7,7 +7,30 @@ from segment import *
 
 class HTTPHandler(BaseHTTPRequestHandler):
 
+    upload_file_path = './image'
+    node_num = 500
+    predict_graph_path = '../result/predict_graph'
+    feature_path = '../result/features/'
+    instance_path = '../result/predict_instance.csv'
+    model_path = '../result/MSRC_v2_model.h5'
+    label_dim = 23
     label_result = ''
+
+    def __predict_image__(self):
+        # Segment original image to graph
+        print('Segment...')
+        graph_ = segment_region(self.upload_file_path, self.node_num)
+        graphs = MultiGraph()
+        graphs.add_graph(graph_)
+        graphs.write(self.predict_graph_path)
+        # Transform to instance
+        print('Instance...')
+        os.system('../GraphToInstance/GraphToInstance/GraphToInstance -g {} -l {} -i {}'.format(
+            self.predict_graph_path, self.feature_path, self.instance_path))
+        # Predict
+        print('Predict...')
+        self.label_result = predict(
+            self.instance_path, self.model_path, self.label_dim)
 
     def do_POST(self):
         content_length = int(self.headers['content-length'])
@@ -24,25 +47,17 @@ class HTTPHandler(BaseHTTPRequestHandler):
             content_length -= len(line)
             line = self.rfile.readline()
         content_length -= len(line)
-        with open('./image', 'wb') as upload_file:
+        with open(self.upload_file_path, 'wb') as upload_file:
             upload_file.write(line)
             data = self.rfile.read(content_length)
             upload_file.write(data)
 
-        # Segment original image to graph
-        segment('./image', 500)
-        # Transform to instance
-        os.system('../GraphToInstance/GraphToInstance/GraphToInstance - g image - l ../result/features/ -i ../result/predict_instance.csv')
-        # Predict
-        self.label_result = predict(
-            '../result/predict_instance.csv', '../result/MSRC_v2_model.h5', 23)
+        self.__predict_image__()
 
-        self.send_response(200)
-
-    def do_GET(self):
         self.send_header('Content-type', 'text/json')
         self.end_headers()
-        self.wfile.write(label_result.encode())
+        self.wfile.write((self.label_result + '\n').encode())
+
         self.send_response(200)
 
 
