@@ -73,13 +73,7 @@ def __evaluate__(label_file_path, pos_labels):
     print('Accuracy: ', __avg__(accuracies))
 
 
-def main(args):
-    instance_file_path = args.instance
-    save_model_path = args.model
-    output_dim = args.dimension
-    label_file_path = args.label
-    batch_size = 128
-
+def predict(instance_file_path, save_model_path, output_dim, label_file_path=None, batch_size=128):
     # Load data
     instances = pd.read_csv(filepath_or_buffer=instance_file_path, header=None)
     predict_instances = instances.values
@@ -101,6 +95,17 @@ def main(args):
         __evaluate__(label_file_path, pos_labels)
 
     return json.dumps(pos_labels)
+
+
+def main(args):
+    instance_file_path = args.instance
+    save_model_path = args.model
+    output_dim = args.dimension
+    label_file_path = args.label
+    batch_size = 128
+
+    predict(instance_file_path, save_model_path,
+            output_dim, label_file_path, batch_size)
 
 
 if __name__ == '__main__':
