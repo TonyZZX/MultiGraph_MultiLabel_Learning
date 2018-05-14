@@ -56,7 +56,7 @@ $ python3 ./py/classifier.py -i ./result/MSRC_v2_instance.csv -l ./result/MSRC_v
 $ python3 ./py/predict.py -i ./result/MSRC_v2_instance.csv -m ./result/MSRC_v2_model.h5 -d 23 -l ./result/MSRC_v2_label.csv
 ```
 
-## Server
+## Server and Application
 
 I also used `Python` to set up a simple server of `MGML` image classification. You may upload an image to the server and get the `JSON` response of prediction labels.
 
@@ -64,3 +64,5 @@ I also used `Python` to set up a simple server of `MGML` image classification. Y
 $ python3 ./py/server.py
 $ curl -X POST -F "data=@./MSRC_v2/Images/1_1_s.bmp" localhost:1696
 ```
+
+[Here](/App) is a `UWP` demo application.
