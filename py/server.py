@@ -7,12 +7,12 @@ from segment import *
 
 class HTTPHandler(BaseHTTPRequestHandler):
 
-    upload_file_path = './image'
+    upload_file_path = './py/image'
     node_num = 500
-    predict_graph_path = '../result/predict_graph'
-    feature_path = '../result/features/'
-    instance_path = '../result/predict_instance.csv'
-    model_path = '../result/MSRC_v2_model.h5'
+    predict_graph_path = './result/predict_graph'
+    feature_path = './result/features/'
+    instance_path = './result/predict_instance.csv'
+    model_path = './result/MSRC_v2_model.h5'
     label_dim = 23
     label_result = ''
 
@@ -25,7 +25,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         graphs.write(self.predict_graph_path)
         # Transform to instance
         print('Instance...')
-        os.system('../GraphToInstance/GraphToInstance/GraphToInstance -g {} -l {} -i {}'.format(
+        os.system('./GraphToInstance/GraphToInstance/GraphToInstance -g {} -l {} -i {}'.format(
             self.predict_graph_path, self.feature_path, self.instance_path))
         # Predict
         print('Predict...')
@@ -34,21 +34,21 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         content_length = int(self.headers['content-length'])
-        boundary = self.rfile.readline()
-        content_disposition = self.rfile.readline()
-        content_type = self.rfile.readline()
-        content_length -= len(boundary) * 2 + \
-            len(content_disposition) + len(content_type)
-        # there may be an empty line
-        line = self.rfile.readline()
-        if line.strip():
-            line = line
-        else:
-            content_length -= len(line)
-            line = self.rfile.readline()
-        content_length -= len(line)
+        # boundary = self.rfile.readline()
+        # content_disposition = self.rfile.readline()
+        # content_type = self.rfile.readline()
+        # content_length -= len(boundary) * 2 + \
+        #     len(content_disposition) + len(content_type)
+        # # there may be an empty line
+        # line = self.rfile.readline()
+        # if line.strip():
+        #     line = line
+        # else:
+        #     content_length -= len(line)
+        #     line = self.rfile.readline()
+        # content_length -= len(line)
         with open(self.upload_file_path, 'wb') as upload_file:
-            upload_file.write(line)
+            # upload_file.write(line)
             data = self.rfile.read(content_length)
             upload_file.write(data)
 

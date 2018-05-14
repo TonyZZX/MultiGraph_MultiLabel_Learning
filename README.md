@@ -61,6 +61,6 @@ $ python3 ./py/predict.py -i ./result/MSRC_v2_instance.csv -m ./result/MSRC_v2_m
 I also used `Python` to set up a simple server of `MGML` image classification. You may upload an image to the server and get the `JSON` response of prediction labels.
 
 ```
-$ python3 ./server.py
-$ curl -X POST -F "data=@../MSRC_v2/Images/1_1_s.bmp" localhost:1696
+$ python3 ./py/server.py
+$ curl -X POST -F "data=@./MSRC_v2/Images/1_1_s.bmp" localhost:1696
 ```
