@@ -64,5 +64,3 @@ I also used `Python` to set up a simple server of `MGML` image classification. Y
 $ python3 ./py/server.py
 $ curl -X POST -F "data=@./MSRC_v2/Images/1_1_s.bmp" localhost:1696
 ```
-
-[Here](/App) is a `UWP` demo application.
